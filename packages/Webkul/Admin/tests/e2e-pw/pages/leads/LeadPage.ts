@@ -55,14 +55,16 @@ export class LeadPage {
     readonly scheduleToInput: Locator;
     readonly locationInput: Locator;
     readonly saveActivityButton: Locator;
-    readonly createLeadButton:Locator;
+    readonly createLeadButton: Locator;
+    readonly searchInput: Locator;
+
 
     constructor(page: Page) {
         this.page = page;
 
         // Lead create button
 
-        this.createLeadButton= page.getByRole('link', { name: 'Create Lead' });
+        this.createLeadButton = page.getByRole('link', { name: 'Create Lead' });
 
         // Lead form
         this.titleInput = page.locator('input[name="title"]');
@@ -72,6 +74,7 @@ export class LeadPage {
         this.typeDropdown = page.locator('select[name="lead_type_id"]');
         this.userDropdown = page.locator('select[name="user_id"]');
         this.leadValueInput = page.locator('input[name="lead_value"]');
+        this.searchInput = page.getByRole('textbox', { name: 'Search by Title' });
 
         // Add person
         this.addPersonButton = page.locator('div', { hasText: /^Click to Add$/ }).nth(1);
@@ -86,6 +89,7 @@ export class LeadPage {
         this.saveLeadButton = page.getByRole('button', { name: 'Save' });
 
         // General
+
         this.leadSuccessToast = page.getByText('Success', { exact: true });
         this.deleteButton = page.getByRole('link', { name: '' });
         this.agreeButton = page.getByRole('button', { name: 'Agree', exact: true });
@@ -130,4 +134,5 @@ export class LeadPage {
         await this.saveLeadButton.click();
         await expect(this.leadSuccessToast).toBeVisible();
     }
+
 }
