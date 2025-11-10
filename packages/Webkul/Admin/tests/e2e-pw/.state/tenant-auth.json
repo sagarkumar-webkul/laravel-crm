@@ -1,0 +1,35 @@
+{
+  "cookies": [
+    {
+      "name": "XSRF-TOKEN",
+      "value": "eyJpdiI6IitJeXpHNEM2RkZLMXFacnBndnpkcGc9PSIsInZhbHVlIjoiczhNVTBmc21pQUZmZWlHNzdCaU9iSmx3OWxNVmFNWTNDU1gzY2Y1WnVnK1RGencvcnJ3b1dTckVzbmFyNmhsSUJPOExYNnZFb0U1eDRVK3dzRU82RTJLVVVLUXVTMWNLbEdGWVorNmdsMDlqbFNLQXhBYVBDYkJ2dERKUTlaY3YiLCJtYWMiOiI1M2E2MmExYTI0MWNhNDM0NmI0ZjIxNGRhYWIzNmNjZGVmZmRhNDNhMTRmOGM2ZDM5NzBhOGZmZjQ5YmE4YmI3IiwidGFnIjoiIn0%3D",
+      "domain": "site1.bagisto-saas.com",
+      "path": "/",
+      "expires": 1761669894.166075,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "bagisto_session",
+      "value": "eyJpdiI6IkEwVnhHcHhyRDVFYTNSRkVOWUtqV3c9PSIsInZhbHVlIjoiKzlCVFJ3VTcrR1NKdG96WWFodGwvZWFKQWZCcVVuZldpanJJZzF1MWlKZXRZZTZ6eTREVDlkN20xeXFJZkc2aE94bXlvS0Z6YkVPdndrSjR3MHdaMEtSZmRyRHh3UWNTWjNsUkdyV05TbkVYMW5IRmNOQVI3OGxXNUc0VmV3U00iLCJtYWMiOiI5NGQ3ODE2ZWEwZjYwNzMwODhmMmJiOTZjZjU0YjQ0ZDY1NDRjYzNmMDhjNzhlZDNlOTg4NmM4MjZhYzkxNjJjIiwidGFnIjoiIn0%3D",
+      "domain": "site1.bagisto-saas.com",
+      "path": "/",
+      "expires": 1761669894.166152,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "http://site1.bagisto-saas.com",
+      "localStorage": [
+        {
+          "name": "phpdebugbar-height",
+          "value": "300"
+        }
+      ]
+    }
+  ]
+}
