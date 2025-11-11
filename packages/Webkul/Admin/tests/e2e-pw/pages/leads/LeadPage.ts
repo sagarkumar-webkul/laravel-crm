@@ -24,6 +24,7 @@ export class LeadPage {
     readonly leadSuccessToast: Locator;
     readonly deleteButton: Locator;
     readonly agreeButton: Locator;
+    readonly editLeadButton:Locator;
 
     // ---- Lead Tabs Locators ----
     readonly mailButton: Locator;
@@ -58,6 +59,10 @@ export class LeadPage {
     readonly createLeadButton: Locator;
     readonly searchInput: Locator;
 
+    // ------ Validation Message
+    readonly expectedCloseDateMustBeDateAfter:Locator
+
+
 
     constructor(page: Page) {
         this.page = page;
@@ -67,7 +72,7 @@ export class LeadPage {
         this.createLeadButton = page.getByRole('link', { name: 'Create Lead' });
 
         // Lead form
-        this.titleInput = page.locator('input[name="title"]');
+        this.titleInput = page.getByRole('textbox', { name: 'Title *' });
         this.descriptionTextarea = page.locator('textarea[name="description"]');
         this.sourceDropdown = page.locator('select[name="lead_source_id"]');
         this.expectedCloseDate = page.locator('input[name="expected_close_date"]');
@@ -91,8 +96,10 @@ export class LeadPage {
         // General
 
         this.leadSuccessToast = page.getByText('Success', { exact: true });
+        this.editLeadButton = page.getByRole('link', { name: '' }).first();
         this.deleteButton = page.getByRole('link', { name: '' });
         this.agreeButton = page.getByRole('button', { name: 'Agree', exact: true });
+
 
         // Tabs
         this.mailButton = page.getByRole('button', { name: ' Mail' });
@@ -124,15 +131,24 @@ export class LeadPage {
         this.scheduleToInput = page.locator('input[name="schedule_to"]');
         this.locationInput = page.locator('input[name="location"]');
         this.saveActivityButton = page.getByRole('button', { name: 'Save Activity' });
+
+        // validation message
+
+        this.expectedCloseDateMustBeDateAfter=page.getByText('The expected close date must be a date after');
     }
 
     async navigateToLeadList() {
         await this.page.goto("admin/leads");
     }
-
-    async saveLead() {
-        await this.saveLeadButton.click();
-        await expect(this.leadSuccessToast).toBeVisible();
+    async getLeadByTitle(title:string)
+    {
+        return this.page.getByRole('link', { name: ` ${title}` });
     }
+    async getPersonInput(personName:string)
+    {
+        return this.page.locator('div').filter({ hasText: `/^${personName}$/` }).nth(1)
+
+    }
+  
 
 }

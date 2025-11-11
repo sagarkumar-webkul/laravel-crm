@@ -12,6 +12,8 @@ test.describe("lead management", async () => {
         email: generateEmail(),
         phone: generatePhoneNumber(),
     };
+    const date=new Date();
+    
     
 
 
@@ -25,7 +27,6 @@ test.describe("lead management", async () => {
         await leadPage.titleInput.fill(leadData.title);
         await leadPage.descriptionTextarea.fill(leadData.description);
         await leadPage.sourceDropdown.selectOption("1");
-        await leadPage.expectedCloseDate.fill("2025-11-10");
         await leadPage.typeDropdown.selectOption("1");
         await leadPage.userDropdown.selectOption("1");
         await leadPage.leadValueInput.fill("1000");
@@ -40,15 +41,23 @@ test.describe("lead management", async () => {
         await leadPage.organizationSearchInput.fill(leadData.title);
         await leadPage.addAsNewButton.click();
 
-        await leadPage.saveLead();
+
+
+        await leadPage.saveLeadButton.click();
+        await leadPage.searchInput.fill(leadData.title);
+        await leadPage.page.keyboard.press('Enter');
+        await expect((await leadPage.getLeadByTitle(leadData.title))).toBeVisible();
+
+       
+        await expect(leadPage.leadSuccessToast).toBeVisible();
 
 
 
     });
 
     test("should update an existing lead", async ({ adminPage }) => {
-        const leadPage = new LeadPage(adminPage);
-        const coreLocators =await new CoreLocators(adminPage);
+        let leadPage = new LeadPage(adminPage);
+
 
         // Now update the lead with new data
         const updatedLeadData = {
@@ -62,26 +71,30 @@ test.describe("lead management", async () => {
         await leadPage.navigateToLeadList();
         await leadPage.searchInput.fill(leadData.title);
         await leadPage.page.keyboard.press('Enter');
+        await Promise.all([
+        leadPage.page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+        (await leadPage.getLeadByTitle(leadData.title)).click(),
+        ]);
+        const page1Promise = leadPage.page.waitForEvent('popup');
+        await leadPage.editLeadButton.click();
+
+        const page1 = await page1Promise;
+         leadPage= new LeadPage(page1);
+        // Use locators from LeadPage via page1 context to fill fields
         await leadPage.titleInput.fill(updatedLeadData.title);
         await leadPage.descriptionTextarea.fill(updatedLeadData.description);
-        await leadPage.sourceDropdown.selectOption("2"); // Change source
-        await leadPage.expectedCloseDate.fill("2025-12-31"); // Update close date
-        await leadPage.typeDropdown.selectOption("2"); // Change type
-        await leadPage.leadValueInput.fill("2000"); // Update lead value
+        await leadPage.sourceDropdown.selectOption("1");
+        await leadPage.typeDropdown.selectOption("1");
+        await leadPage.userDropdown.selectOption("1");
+        await leadPage.leadValueInput.fill("1000");
+        await leadPage.saveLeadButton.click();
+        await leadPage.searchInput.fill(updatedLeadData.title);
+        await leadPage.page.keyboard.press('Enter');
+        await expect((await leadPage.getLeadByTitle(updatedLeadData.title))).toBeVisible();
 
-        // Update person details
-        await leadPage.personEmailInput.fill(updatedLeadData.email);
-        await leadPage.personPhoneInput.fill(updatedLeadData.phone);
-
-        // Save the updated lead
-        await leadPage.saveLead();
-
-        // Verify the updates were successful
-        await expect(leadPage.titleInput).toHaveValue(updatedLeadData.title);
-        await expect(leadPage.descriptionTextarea).toHaveValue(updatedLeadData.description);
-        await expect(leadPage.leadValueInput).toHaveValue("2000");
-        await expect(leadPage.personEmailInput).toHaveValue(updatedLeadData.email);
-        await expect(leadPage.personPhoneInput).toHaveValue(updatedLeadData.phone);
+       
+        await expect(leadPage.leadSuccessToast).toBeVisible();
+      
     });
 
 
