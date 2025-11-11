@@ -1,6 +1,7 @@
 import { Page, Locator, expect } from "@playwright/test";
+import CoreLocators from "../../locator/CoreLocators";
 
-export class LeadPage {
+export class LeadPage extends CoreLocators {
     readonly page: Page;
 
     // ---- Lead Creation Locators ----
@@ -22,9 +23,11 @@ export class LeadPage {
 
     // ---- Lead List Locators ----
     readonly leadSuccessToast: Locator;
-    readonly deleteButton: Locator;
+    readonly listViewButton: Locator;
     readonly agreeButton: Locator;
     readonly editLeadButton:Locator;
+    readonly deleteLeadButton:Locator;
+    readonly listSearchInput:Locator;
 
     // ---- Lead Tabs Locators ----
     readonly mailButton: Locator;
@@ -58,13 +61,13 @@ export class LeadPage {
     readonly saveActivityButton: Locator;
     readonly createLeadButton: Locator;
     readonly searchInput: Locator;
-
     // ------ Validation Message
     readonly expectedCloseDateMustBeDateAfter:Locator
 
 
 
     constructor(page: Page) {
+        super(page);
         this.page = page;
 
         // Lead create button
@@ -80,6 +83,7 @@ export class LeadPage {
         this.userDropdown = page.locator('select[name="user_id"]');
         this.leadValueInput = page.locator('input[name="lead_value"]');
         this.searchInput = page.getByRole('textbox', { name: 'Search by Title' });
+        this.listSearchInput=page.getByRole('textbox',{name:'Search'})
 
         // Add person
         this.addPersonButton = page.locator('div', { hasText: /^Click to Add$/ }).nth(1);
@@ -97,8 +101,9 @@ export class LeadPage {
 
         this.leadSuccessToast = page.getByText('Success', { exact: true });
         this.editLeadButton = page.getByRole('link', { name: '' }).first();
-        this.deleteButton = page.getByRole('link', { name: '' });
+        this.listViewButton = page.getByRole('link', { name: '' });
         this.agreeButton = page.getByRole('button', { name: 'Agree', exact: true });
+        this.deleteLeadButton= page.locator('.cursor-pointer.rounded-md.p-1\\.5.text-2xl.transition-all.hover\\:bg-gray-200.dark\\:hover\\:bg-gray-800.max-sm\\:place-self-center.icon-delete').first();
 
 
         // Tabs
@@ -136,13 +141,15 @@ export class LeadPage {
 
         this.expectedCloseDateMustBeDateAfter=page.getByText('The expected close date must be a date after');
     }
-
     async navigateToLeadList() {
         await this.page.goto("admin/leads");
     }
     async getLeadByTitle(title:string)
     {
         return this.page.getByRole('link', { name: ` ${title}` });
+    }
+    async getSearchInput(placeholder:string){
+        return this.page.getByRole('textbox',{name:`${placeholder}`})
     }
     async getPersonInput(personName:string)
     {

@@ -12,6 +12,13 @@ test.describe("lead management", async () => {
         email: generateEmail(),
         phone: generatePhoneNumber(),
     };
+    const updatedLeadData = {
+            title: generateName(),
+            description: generateDescription(),
+            email: generateEmail(),
+            phone: generatePhoneNumber(),
+    };
+
     const date=new Date();
     
     
@@ -60,13 +67,7 @@ test.describe("lead management", async () => {
 
 
         // Now update the lead with new data
-        const updatedLeadData = {
-            title: generateName(),
-            description: generateDescription(),
-            email: generateEmail(),
-            phone: generatePhoneNumber(),
-        };
-
+   
         // Fill updated lead data
         await leadPage.navigateToLeadList();
         await leadPage.searchInput.fill(leadData.title);
@@ -90,12 +91,34 @@ test.describe("lead management", async () => {
         await leadPage.saveLeadButton.click();
         await leadPage.searchInput.fill(updatedLeadData.title);
         await leadPage.page.keyboard.press('Enter');
-        await expect((await leadPage.getLeadByTitle(updatedLeadData.title))).toBeVisible();
-
+        await expect(((await leadPage.getLeadByTitle(updatedLeadData.title)).first())).toBeVisible();
        
         await expect(leadPage.leadSuccessToast).toBeVisible();
       
     });
+    test("user should able to delete the lead",async({adminPage})=>{
+        const leadPage= new LeadPage(adminPage);
+    
+
+        await leadPage.navigateToLeadList();
+
+        await leadPage.listViewButton.click();
+
+        (await leadPage.getSerachLocator('Search')).fill(updatedLeadData.title);
+        await leadPage.page.keyboard.press('Enter');
+        await leadPage.deleteLeadButton.click();
+        await leadPage.agreeButton.click();
+
+        (await leadPage.getSerachLocator('Search')).fill(updatedLeadData.title);
+        await leadPage.page.keyboard.press('Enter');
+        await expect(leadPage.deleteLeadButton).not.toBeVisible();
+        
+        
+       
+        
+
+
+    })
 
 
 })

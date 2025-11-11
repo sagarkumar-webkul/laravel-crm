@@ -1,12 +1,18 @@
 import { Locator, Page } from "playwright/test";
+import { title } from "process";
 
 export default class CoreLocators {
     readonly page: Page
-    readonly searchInput:Locator
+
     constructor(page:Page) {
 
-        this.page= page,
-        this.searchInput = page.locator('input[name="search"]');
+        this.page = page;
     }
+
+    async getSerachLocator(placeholder:string)
+    {
+        return  this.page.getByRole('textbox', { name: `${placeholder}`, exact: true })
+    }
+
     
 }
