@@ -1,6 +1,13 @@
 import { Page, Locator, expect } from "@playwright/test";
 import CoreLocators from "../../locator/CoreLocators";
-
+import { PersonData } from "../persons/PersonsPage";
+export type LeadData = {
+        title: string,
+        description: string,
+        email:string,
+        phone: string,
+        person:PersonData,
+    };
 export class LeadPage extends CoreLocators {
     readonly page: Page;
 
@@ -148,14 +155,41 @@ export class LeadPage extends CoreLocators {
     {
         return this.page.getByRole('link', { name: ` ${title}` });
     }
-    async getSearchInput(placeholder:string){
-        return this.page.getByRole('textbox',{name:`${placeholder}`})
-    }
-    async getPersonInput(personName:string)
+    async createLead(leadData:LeadData)
     {
-        return this.page.locator('div').filter({ hasText: `/^${personName}$/` }).nth(1)
+
+        await this.navigateToLeadList();
+
+        await this.createLeadButton.click();
+
+        await this.titleInput.fill(leadData.title);
+        await this.descriptionTextarea.fill(leadData.description);
+        await this.sourceDropdown.selectOption("1");
+        await this.typeDropdown.selectOption("1");
+        await this.userDropdown.selectOption("1");
+        await this.leadValueInput.fill("1000");
+
+        await this.addPersonButton.click();
+        await this.personSearchInput.fill(leadData.person.name);
+        await this.selectListItmeByName(leadData.person.name);
+        await this.personEmailInput.fill(leadData.email);
+        await this.personPhoneInput.fill(leadData.phone);
+
+        await this.addOrganizationButton.click();
+        await this.organizationSearchInput.fill(leadData.title);
+        await this.addAsNewButton.click();
+
+
+
+        (await this.getElementByTypeAndName('button',"Save")).click();
+        await this.searchInput.fill(leadData.title);
+        await this.page.keyboard.press('Enter');
+        await expect((await this.getLeadByTitle(leadData.title))).toBeVisible();
+
+       
+        await expect(this.leadSuccessToast).toBeVisible();
 
     }
-  
+
 
 }

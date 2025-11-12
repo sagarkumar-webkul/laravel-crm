@@ -1,0 +1,15 @@
+import { test } from "../fixtures/AdminFixtures";
+import PersonsPage from "../pages/persons/PersonsPage";
+
+
+test.describe("person managment",async()=>{
+    test("verify create person",async({adminPage})=>{
+        const personPage= new PersonsPage(adminPage);
+        await personPage.page.goto("admin/contacts/persons");
+     
+
+    })
+    
+
+})
+

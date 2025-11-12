@@ -50,7 +50,7 @@ test.describe("lead management", async () => {
 
 
 
-        await leadPage.saveLeadButton.click();
+        (await leadPage.getElementByTypeAndName('button',"Save")).click();
         await leadPage.searchInput.fill(leadData.title);
         await leadPage.page.keyboard.press('Enter');
         await expect((await leadPage.getLeadByTitle(leadData.title))).toBeVisible();
@@ -88,7 +88,7 @@ test.describe("lead management", async () => {
         await leadPage.typeDropdown.selectOption("1");
         await leadPage.userDropdown.selectOption("1");
         await leadPage.leadValueInput.fill("1000");
-        await leadPage.saveLeadButton.click();
+        (await leadPage.getElementByTypeAndName('button',"Save")).click();
         await leadPage.searchInput.fill(updatedLeadData.title);
         await leadPage.page.keyboard.press('Enter');
         await expect(((await leadPage.getLeadByTitle(updatedLeadData.title)).first())).toBeVisible();
@@ -104,12 +104,12 @@ test.describe("lead management", async () => {
 
         await leadPage.listViewButton.click();
 
-        (await leadPage.getSerachLocator('Search')).fill(updatedLeadData.title);
+        (await leadPage.getElementByTypeAndName('textbox','Search')).fill(updatedLeadData.title);
         await leadPage.page.keyboard.press('Enter');
+        await leadPage.deleteLeadButton.isVisible();
         await leadPage.deleteLeadButton.click();
-        await leadPage.agreeButton.click();
-
-        (await leadPage.getSerachLocator('Search')).fill(updatedLeadData.title);
+        await (await leadPage.getElementByTypeAndName('button','Agree')).click();
+        (await leadPage.getElementByTypeAndName('textbox','Search')).fill(updatedLeadData.title);
         await leadPage.page.keyboard.press('Enter');
         await expect(leadPage.deleteLeadButton).not.toBeVisible();
         

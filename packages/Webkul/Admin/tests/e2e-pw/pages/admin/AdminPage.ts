@@ -1,7 +1,8 @@
 import { Page, Locator, expect } from "@playwright/test";
 import { allowedNodeEnvironmentFlags } from "process";
+import CoreLocators from "../../locator/CoreLocators";
 
-export class AdminPage {
+export class AdminPage extends CoreLocators {
     readonly page: Page;
     readonly emailInput: Locator;
     readonly passwordInput: Locator;
@@ -11,6 +12,7 @@ export class AdminPage {
     readonly signOutLink: Locator;
 
     constructor(page: Page) {
+        super(page)
         this.page = page;
         this.emailInput = page.getByPlaceholder("Email Address");
         this.passwordInput = page.getByPlaceholder("Password");
