@@ -1,17 +1,22 @@
 import { Page } from "playwright/test";
 import CoreLocators from "../../locator/CoreLocators";
-import { generateFirstName, generateLocation } from "../../utils/faker";
-type Organization = {
+import { generateFirstName, generateLocation, generateName } from "../../utils/faker";
+export type OrganizationData = {
     name: string;
     address: string;
     country: string; // country code, e.g. 'IN'
     state: string;   // state code, e.g. 'DL'
     city: string;
     postcode: string;
-    extraDetailSearchTerm: string;
-    extraDetailSelectText: string;
 };
-
+ export  const organizationData: OrganizationData = {
+  name:  generateName(),
+  address: generateLocation() ,
+  country: "IN",               // India country code
+  state: "DL",                 // Delhi state code
+  city: "New Delhi",
+  postcode: "110015",
+};
 export default class OrganizationPage extends CoreLocators{
 
     
@@ -27,7 +32,7 @@ export default class OrganizationPage extends CoreLocators{
        await  this.page.goto("admin/contacts/organizations");
     }
 
-    async createOrganization(orgData:Organization) {
+    async createOrganization(orgData:OrganizationData) {
    
     await this.navigateToOrganization();
 

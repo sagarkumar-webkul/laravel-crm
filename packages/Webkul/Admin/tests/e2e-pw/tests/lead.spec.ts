@@ -1,17 +1,39 @@
 import { test, expect } from "../fixtures/AdminFixtures";
 import CoreLocators from "../locator/CoreLocators";
-import { LeadPage } from "../pages/leads/LeadPage";
-import { generateDescription, generateEmail, generateName, generatePhoneNumber } from "../utils/faker";
+import { LeadData, LeadPage } from "../pages/leads/LeadPage";
+import PersonsPage, { PersonData } from "../pages/persons/PersonsPage";
+import { ProductData } from "../pages/products/ProductPage";
+import { generateDescription, generateEmail, generateName, generatePhoneNumber, generateSKU } from "../utils/faker";
 
 
 test.describe("lead management", async () => {
 
-    const leadData = {
-        title: generateName(),
-        description: generateDescription(),
-        email: generateEmail(),
-        phone: generatePhoneNumber(),
-    };
+    const personData:PersonData={
+          name: generateName(),
+            emails:generateEmail(),
+            contactNumber:generatePhoneNumber(),
+            jobTitle: generateName(),
+            salesOwnerId: "1", // Example sales owner id
+            organizationName: "Example"
+    }
+
+    const productData:ProductData={
+            name: generateName(),
+            description: generateDescription(),
+            sku: generateSKU(),
+            price: "100",
+            quantity: "50"
+    }
+
+    const leadData:LeadData = {
+           title: generateName(),
+           description: generateDescription(),
+           value: (Math.floor(Math.random()*10000)).toString(),
+           expectedCloseDate:"2028-12-31",
+           person:personData,
+           product:productData,
+           organizationName:personData.organizationName
+       };
     const updatedLeadData = {
             title: generateName(),
             description: generateDescription(),
@@ -25,38 +47,12 @@ test.describe("lead management", async () => {
 
 
     test("should create a new lead", async ({ adminPage }) => {
+      
         const leadPage = new LeadPage(adminPage);
-
-        await leadPage.navigateToLeadList();
-
-        await leadPage.createLeadButton.click();
-
-        await leadPage.titleInput.fill(leadData.title);
-        await leadPage.descriptionTextarea.fill(leadData.description);
-        await leadPage.sourceDropdown.selectOption("1");
-        await leadPage.typeDropdown.selectOption("1");
-        await leadPage.userDropdown.selectOption("1");
-        await leadPage.leadValueInput.fill("1000");
-
-        await leadPage.addPersonButton.click();
-        await leadPage.personSearchInput.fill(leadData.title);
-        await leadPage.addAsNewButton.click();
-        await leadPage.personEmailInput.fill(leadData.email);
-        await leadPage.personPhoneInput.fill(leadData.phone);
-
-        await leadPage.addOrganizationButton.click();
-        await leadPage.organizationSearchInput.fill(leadData.title);
-        await leadPage.addAsNewButton.click();
-
-
-
-        (await leadPage.getElementByTypeAndName('button',"Save")).click();
-        await leadPage.searchInput.fill(leadData.title);
-        await leadPage.page.keyboard.press('Enter');
-        await expect((await leadPage.getLeadByTitle(leadData.title))).toBeVisible();
-
-       
-        await expect(leadPage.leadSuccessToast).toBeVisible();
+        const personPage= new PersonsPage(adminPage);
+        
+        await personPage.createPerson(personData);
+       await leadPage.createLead(leadData);
 
 
 

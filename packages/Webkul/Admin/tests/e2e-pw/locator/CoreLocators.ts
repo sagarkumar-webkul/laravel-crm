@@ -2,10 +2,10 @@ import { Locator, Page } from "playwright/test";
 
 type ElementType = "button" | "textbox" | "link";
 export default class CoreLocators {
-    readonly page:Page;
+    readonly page: Page;
 
 
-      // Person Locators
+    // Person Locators
     readonly createPersonLink: Locator;
     readonly savePersonButton: Locator;
     readonly personNameTextbox: Locator;
@@ -78,6 +78,7 @@ export default class CoreLocators {
     readonly productSkuInput: Locator;
     readonly leadTitleInput: Locator;
     readonly leadValueInput: Locator;
+    readonly leadProductSelect: Locator;
     readonly emailReplyToInput: Locator;
     readonly emailSubjectInput: Locator;
     readonly fileTitleInput: Locator;
@@ -98,6 +99,9 @@ export default class CoreLocators {
     readonly organizationPostcodeTextbox: Locator;
     readonly organizationCountryCombobox: Locator;
     readonly organizationStateSelect: Locator;
+
+    readonly addPersonButton: Locator;
+
 
     // Textboxes - date or specialized text input
     readonly expiredAtTextbox: Locator;
@@ -136,13 +140,22 @@ export default class CoreLocators {
     readonly leadTypeSelect: Locator;
     readonly leadUserSelect: Locator;
     readonly leadSourceLabelSelect: Locator;
+    readonly leadOrganizationSelect: Locator;
     readonly userRoleSelect: Locator;
     readonly userViewPermissionSelect: Locator;
     readonly userGroupListbox: Locator;
     readonly organizationSelectSearchTextbox: Locator; // For search in org add extra details modal
-
+    readonly leadProductAddMoreButton: Locator;
+    readonly quoteLinkToLeadButton:Locator;
     // Search related list item selector
     readonly personListItem: (name: string) => Locator;
+
+
+    readonly quoteAddPersonButton:Locator
+    readonly addAsNewButton:Locator
+
+    readonly quoteSelectListPerson:Locator
+    
 
     // Edit and delete icons
     readonly firstEditIcon: Locator;
@@ -191,13 +204,22 @@ export default class CoreLocators {
         this.createOrganizationButton = page.getByRole('link', { name: 'Create Organization' });
         this.saveOrganizationButton = page.getByRole("button", { name: "Save Organization" });
         this.deleteButton = page.getByRole('button', { name: 'Delete' });
+        this.leadProductSelect = page.locator('#products').getByText('Click to Add');
+        this.leadProductAddMoreButton = page.locator('//button[@class="flex max-w-max items-center gap-2 text-brandColor"]')
+        this.leadOrganizationSelect = page.locator('div').filter({ hasText: /^Click to add$/ }).nth(2);
+        
+        this.addPersonButton = page.locator('div', { hasText: /^Click to Add$/ }).nth(1);
 
+        this.quoteAddPersonButton= page.locator('.relative.flex.items-center.justify-between').first();
         // Links
         this.createQuoteLink = page.getByRole("link", { name: "Create Quote" });
         this.createProductLink = page.getByRole("link", { name: "Create Product" });
         this.createLeadLink = page.getByRole("link", { name: "Create Lead" });
         this.signOutLink = page.getByRole("link", { name: "Sign Out" });
         this.createOrganizationLink = page.getByRole('link', { name: 'Create Organization' });
+
+        this.addAsNewButton = page.getByText('Add as New');
+        this.quoteSelectListPerson=page.locator(`(//li[@class="flex cursor-pointer gap-2 p-2 transition-colors hover:bg-blue-100 dark:text-gray-300 dark:hover:bg-gray-900"])[1]`);
 
         // Textboxes - single line text input fields
         this.subjectTextbox = page.getByRole("textbox", { name: "Subject *" });
@@ -279,6 +301,8 @@ export default class CoreLocators {
         this.firstEditIcon = page.locator("span.cursor-pointer.icon-edit").first();
         this.firstDeleteIcon = page.locator("span.cursor-pointer.icon-delete").first();
 
+        this.quoteLinkToLeadButton=page.locator('div:nth-child(2) > div > .relative.inline-block > .relative');
+
         // Activity modal selectors
         this.addActivityButton = page.getByRole("button", { name: " Activity" });
         this.activityCallOption = page.getByText("Call", { exact: true });
@@ -295,7 +319,7 @@ export default class CoreLocators {
 
         // Organization Locators Initialization
         this.createOrgLink = page.getByRole('link', { name: 'Create Organization' });
-    
+
 
         this.orgNameTextbox = page.getByRole('textbox', { name: 'Name *' });
         this.orgAddressTextarea = page.locator('textarea[name="address\\[address\\]"]');
@@ -307,7 +331,7 @@ export default class CoreLocators {
         this.orgExtraDetailsDiv = page.locator('div').filter({ hasText: /^Click to add$/ });
         this.orgExampleListItem = (text: string) => page.getByRole('listitem').filter({ hasText: text });
 
-           // Person Locators Initialization
+        // Person Locators Initialization
         this.createPersonLink = page.getByRole('link', { name: 'Create Person' });
         this.savePersonButton = page.getByRole('button', { name: 'Save Person' });
         this.personNameTextbox = page.getByRole('textbox', { name: 'Name *' });
@@ -327,12 +351,11 @@ export default class CoreLocators {
 
     async getElementByTypeAndName(type: ElementType, name: string) {
 
-        return this.page.getByRole(`${type}`, { name: `${name}`, exact: true })
+        return this.page.getByRole(`${type}`, { name: `${name}`,exact:true});
 
     }
-    async selectListItmeByName(value:string)
-    {
-       return  this.page.getByRole('listitem').filter({ hasText: `${value}` });
+    async selectListItmeByName(value: string) {
+        return this.page.getByRole('listitem').filter({ hasText: `${value}` });
     }
 
 

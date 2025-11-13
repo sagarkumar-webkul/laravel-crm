@@ -1,81 +1,60 @@
 import { test } from "../fixtures/AdminFixtures";
 import { AdminPage } from "../pages/admin/AdminPage";
-import { LeadPage } from "../pages/leads/LeadPage";
-import OrganizationPage from "../pages/organization/OrganizationPage";
+import { LeadData, LeadPage } from "../pages/leads/LeadPage";
+import OrganizationPage, { OrganizationData } from "../pages/organization/OrganizationPage";
 import PersonsPage, { PersonData } from "../pages/persons/PersonsPage";
-import { QuotesPage } from "../pages/quotes/QuotesPage";
-import { generateDescription, generateEmail, generateName, generatePhoneNumber } from "../utils/faker";
+import { ProductPage } from "../pages/products/ProductPage";
+import { QuotesPage, sampleQuoteData } from "../pages/quotes/QuotesPage";
+import { generateDescription, generateEmail, generateLocation, generateName, generatePhoneNumber, generateSKU } from "../utils/faker";
 
 test.describe("quotes mangement", async () => {
 
-  const personData: PersonData = {
-  name: "John Doe",
-  emails: ["john.doe@workemail.com", "john.home@example.com"],
-  emailTypes: ["Work", "Home"],
-  contactNumbers: ["+1234567890", "+0987654321"],
-  contactNumberTypes: ["Work", "Home"],
-  jobTitle: "Senior Software Engineer",
-  salesOwnerId: "1", // Example sales owner id
-  organizationName: "Example"
+  const productData = {
+    name: generateName(),
+    description: generateDescription(),
+    sku: generateSKU(),
+    price: Math.floor(Math.random()*1000).toString(),
+    quantity: Math.floor(Math.random()*100).toString()
 };
-  const orgData={
-  name: "My Company",
-  address: "123 Main Street",
-  country: "IN",
-  state: "DL",
-  city: "Delhi",
-  postcode: "110001",
-  extraDetailSearchTerm: "exampl",
-  extraDetailSelectText: "Example"
-  }
 
-  const sampleBillingAddress = {
-  address: "123 Billing St, ARV Park",
-  countryCode: "IN",
-  stateCode: "DL",
-  city: "Delhi",
-  postcode: "110001",
+  const organizationData: OrganizationData = {
+  name:  generateName(),
+  address: generateLocation() ,
+  country: "IN",               // India country code
+  state: "DL",                 // Delhi state code
+  city: "New Delhi",
+  postcode: "110015",
 };
-const sampleQuoteData = {
-  subject: "Quote for Q4 Project",
-  description: "Detailed quote for the upcoming Q4 project including all requested features.",
-  salesOwnerId: "1",  // Example sales owner id
-  expiredAt: "2025-12-31",
-  personName: "John Doe",
-  leadName: "Lead Company Inc.",
-  // quoteItems can be added here as necessary
+  const personData: PersonData = {
+  name: generateName(),
+  emails:generateEmail(),
+  contactNumber:generatePhoneNumber(),
+  jobTitle: generateName(),
+  salesOwnerId: "1", // Example sales owner id
+  organizationName: organizationData.name
 };
-    const leadData = {
+  
+    const leadData:LeadData = {
         title: generateName(),
         description: generateDescription(),
-        email: generateEmail(),
-        phone: generatePhoneNumber(),
+        value: (Math.floor(Math.random()*10000)).toString(),
+        expectedCloseDate:"2028-12-31",
         person:personData,
+        product:productData,
+        organizationName:personData.organizationName
     };
-
-
-
 
     test("verify create quote",async({adminPage})=>{
        const organization= new OrganizationPage(adminPage);
        const person= new PersonsPage(adminPage);
        const quote= new QuotesPage(adminPage);
        const lead=new LeadPage(adminPage);
+       const product= new ProductPage(adminPage);
 
-       await lead.createLead(leadData);
+      //  await lead.createLead(leadData);
 
-      /* first create organization for the quote*/
-       
-      // await organization.createOrganization(orgData);
+      await quote.createQuote(sampleQuoteData);
 
-      /* than create person for the quote */
-
-      // await  person.createPerson(personData);
-
-      await quote.createQuote(sampleQuoteData,sampleBillingAddress)
-
-      
-       
        
   
         

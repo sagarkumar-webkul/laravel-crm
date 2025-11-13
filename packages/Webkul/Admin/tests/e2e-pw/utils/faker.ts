@@ -12,6 +12,8 @@ const usedSlugs = new Set();
 const usedCurrencies = new Set();
 const usedLocales = new Set();
 
+
+
 export function generateName() {
     const adjectives = [
         "Cool",

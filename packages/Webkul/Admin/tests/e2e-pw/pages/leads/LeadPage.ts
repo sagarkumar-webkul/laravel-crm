@@ -1,13 +1,30 @@
 import { Page, Locator, expect } from "@playwright/test";
 import CoreLocators from "../../locator/CoreLocators";
-import { PersonData } from "../persons/PersonsPage";
+import { personData, PersonData } from "../persons/PersonsPage";
+import { productData, ProductData, ProductPage } from "../products/ProductPage";
+import { generateDescription, generateName } from "../../utils/faker";
+
+
 export type LeadData = {
-        title: string,
-        description: string,
-        email:string,
-        phone: string,
-        person:PersonData,
+    title: string;
+    description: string;
+    value: string;
+    expectedCloseDate: string; // ISO date string
+    person: PersonData;
+    organizationName: string;
+    product: ProductData;
+};
+
+export   const leadData:LeadData = {
+        title: generateName(),
+        description: generateDescription(),
+        value: (Math.floor(Math.random()*10000)).toString(),
+        expectedCloseDate:"2028-12-31",
+        person:personData,
+        product:productData,
+        organizationName:personData.organizationName
     };
+
 export class LeadPage extends CoreLocators {
     readonly page: Page;
 
@@ -19,9 +36,9 @@ export class LeadPage extends CoreLocators {
     readonly typeDropdown: Locator;
     readonly userDropdown: Locator;
     readonly leadValueInput: Locator;
-    readonly addPersonButton: Locator;
+
     readonly personSearchInput: Locator;
-    readonly addAsNewButton: Locator;
+  
     readonly personEmailInput: Locator;
     readonly personPhoneInput: Locator;
     readonly addOrganizationButton: Locator;
@@ -32,9 +49,9 @@ export class LeadPage extends CoreLocators {
     readonly leadSuccessToast: Locator;
     readonly listViewButton: Locator;
     readonly agreeButton: Locator;
-    readonly editLeadButton:Locator;
-    readonly deleteLeadButton:Locator;
-    readonly listSearchInput:Locator;
+    readonly editLeadButton: Locator;
+    readonly deleteLeadButton: Locator;
+    readonly listSearchInput: Locator;
 
     // ---- Lead Tabs Locators ----
     readonly mailButton: Locator;
@@ -69,7 +86,7 @@ export class LeadPage extends CoreLocators {
     readonly createLeadButton: Locator;
     readonly searchInput: Locator;
     // ------ Validation Message
-    readonly expectedCloseDateMustBeDateAfter:Locator
+    readonly expectedCloseDateMustBeDateAfter: Locator
 
 
 
@@ -90,12 +107,12 @@ export class LeadPage extends CoreLocators {
         this.userDropdown = page.locator('select[name="user_id"]');
         this.leadValueInput = page.locator('input[name="lead_value"]');
         this.searchInput = page.getByRole('textbox', { name: 'Search by Title' });
-        this.listSearchInput=page.getByRole('textbox',{name:'Search'})
+        this.listSearchInput = page.getByRole('textbox', { name: 'Search' })
 
         // Add person
-        this.addPersonButton = page.locator('div', { hasText: /^Click to Add$/ }).nth(1);
+
         this.personSearchInput = page.getByRole('textbox', { name: 'Search...' });
-        this.addAsNewButton = page.getByText('Add as New');
+
         this.personEmailInput = page.locator('input[name="person[emails][0][value]"]');
         this.personPhoneInput = page.locator('input[name="person[contact_numbers][0][value]"]');
 
@@ -110,7 +127,7 @@ export class LeadPage extends CoreLocators {
         this.editLeadButton = page.getByRole('link', { name: '' }).first();
         this.listViewButton = page.getByRole('link', { name: '' });
         this.agreeButton = page.getByRole('button', { name: 'Agree', exact: true });
-        this.deleteLeadButton= page.locator('.cursor-pointer.rounded-md.p-1\\.5.text-2xl.transition-all.hover\\:bg-gray-200.dark\\:hover\\:bg-gray-800.max-sm\\:place-self-center.icon-delete').first();
+        this.deleteLeadButton = page.locator('.cursor-pointer.rounded-md.p-1\\.5.text-2xl.transition-all.hover\\:bg-gray-200.dark\\:hover\\:bg-gray-800.max-sm\\:place-self-center.icon-delete').first();
 
 
         // Tabs
@@ -146,20 +163,19 @@ export class LeadPage extends CoreLocators {
 
         // validation message
 
-        this.expectedCloseDateMustBeDateAfter=page.getByText('The expected close date must be a date after');
+        this.expectedCloseDateMustBeDateAfter = page.getByText('The expected close date must be a date after');
     }
     async navigateToLeadList() {
         await this.page.goto("admin/leads");
     }
-    async getLeadByTitle(title:string)
-    {
+    async getLeadByTitle(title: string) {
         return this.page.getByRole('link', { name: ` ${title}` });
     }
-    async createLead(leadData:LeadData)
-    {
+    async createLead(leadData: LeadData) {
+        const productPage = new ProductPage(this.page);
+        await productPage.createProduct(leadData.product);
 
         await this.navigateToLeadList();
-
         await this.createLeadButton.click();
 
         await this.titleInput.fill(leadData.title);
@@ -167,26 +183,38 @@ export class LeadPage extends CoreLocators {
         await this.sourceDropdown.selectOption("1");
         await this.typeDropdown.selectOption("1");
         await this.userDropdown.selectOption("1");
-        await this.leadValueInput.fill("1000");
+        await this.leadValueInput.fill(leadData.value);
 
         await this.addPersonButton.click();
         await this.personSearchInput.fill(leadData.person.name);
-        await this.selectListItmeByName(leadData.person.name);
-        await this.personEmailInput.fill(leadData.email);
-        await this.personPhoneInput.fill(leadData.phone);
+        const personItem = (await this.selectListItmeByName(leadData.person.name)).first();
+        await this.page.waitForTimeout(1000);
+        const isPersonAlreadyPresent = await personItem.isVisible();
 
-        await this.addOrganizationButton.click();
-        await this.organizationSearchInput.fill(leadData.title);
-        await this.addAsNewButton.click();
+        if (isPersonAlreadyPresent) {
+            await personItem.click();
+            console.log("person allready present");
+        }
+        else {
 
+            await this.addAsNewButton.click();
+            await this.personEmailInput.fill(leadData.person.emails);
+            await this.personPhoneInput.fill(leadData.person.contactNumber);
+            await this.addOrganizationButton.click();                 // this an issue add organiztion is not working if person allready present so that i have added this into else condition.
+            await this.organizationSearchInput.fill(leadData.title);
+            await this.addAsNewButton.click();
 
-
-        (await this.getElementByTypeAndName('button',"Save")).click();
+        }
+        await this.leadProductAddMoreButton.click();
+        await this.leadProductSelect.click();
+        (await this.getElementByTypeAndName('textbox','Search...')).fill(leadData.product.name);
+        await this.page.locator(`//li[@class="cursor-pointer px-4 py-2 text-gray-800 transition-colors hover:bg-blue-100 dark:text-white dark:hover:bg-gray-900"]`).first().click();
+        (await this.getElementByTypeAndName('button', "Save")).click();
         await this.searchInput.fill(leadData.title);
         await this.page.keyboard.press('Enter');
         await expect((await this.getLeadByTitle(leadData.title))).toBeVisible();
 
-       
+
         await expect(this.leadSuccessToast).toBeVisible();
 
     }

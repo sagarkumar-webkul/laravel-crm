@@ -1,17 +1,24 @@
 import { Page } from "playwright/test";
 import CoreLocators from "../../locator/CoreLocators";
-import { generateEmail, generateFullName, generatePhoneNumber } from "../../utils/faker";
+import { generateEmail, generateFullName, generateName, generatePhoneNumber } from "../../utils/faker";
+import { organizationData } from "../organization/OrganizationPage";
 export type PersonData = {
     name: string;
-    emails: string[];                     // array to hold multiple emails
-    emailTypes: ("Work" | "Home" | "Add More")[];  // corresponding types for each email
-    contactNumbers: string[];             // array to hold multiple contact numbers
-    contactNumberTypes: ("Work" | "Home" | "Add More")[]; // types for contact numbers
+    emails: string;                     // array to hold multiple emails
+    contactNumber: string;             // array to hold multiple contact numbers
     jobTitle: string;
     salesOwnerId: string;                 // id or value representing Sales Owner
     organizationName: string;
 };
 
+ export const personData: PersonData = {
+  name: generateName(),
+  emails:generateEmail(),
+  contactNumber:generatePhoneNumber(),
+  jobTitle: generateName(),
+  salesOwnerId: "1", // Example sales owner id
+  organizationName: organizationData.name
+};
 
 export default class PersonsPage extends CoreLocators{
     readonly page: Page;
@@ -34,24 +41,23 @@ async createPerson(personData:PersonData) {
     // Fill person details (use first email/phone if multiple provided)
     await this.personNameTextbox.fill(personData.name);
     if (personData.emails && personData.emails.length > 0) {
-        await this.personEmailTextbox.fill(personData.emails[0]);
+        await this.personEmailTextbox.fill(personData.emails);
     }
-    if (personData.contactNumbers && personData.contactNumbers.length > 0) {
-        await this.personPhoneTextbox.fill(personData.contactNumbers[0]);
+    if (personData.contactNumber && personData.contactNumber.length > 0) {
+        await this.personPhoneTextbox.fill(personData.contactNumber);
     }
     await this.personJobTitleTextbox.fill(personData.jobTitle || "");
 
     // Assign organization (if provided)
     if (personData.organizationName) {
         await this.personOrgSelectDiv.click();
-        await this.personOrgSearchTextbox.fill(personData.organizationName);
-        await this.personOrgListItem(personData.organizationName).click();
+        await (await this.getElementByTypeAndName('textbox','Search...')).fill("Examp");
+        await this.personOrgListItem("Examp").click();
     }
 
     // Save person
     await this.savePersonButton.click();
 
-    return { name: personData.name, email: personData.emails?.[0], phone: personData.contactNumbers?.[0] };
 }
     
 

@@ -1,22 +1,41 @@
 import { Locator, Page } from "@playwright/test";
 import CoreLocators from "../../locator/CoreLocators";
+import { productData, ProductData } from "../products/ProductPage";
+import { generateDescription, generateFullName } from "../../utils/faker";
+import PersonsPage, { PersonData, personData } from "../persons/PersonsPage";
 export type QuoteData = {
-  subject: string;
-  description: string;
-  salesOwnerId: string;
-  expiredAt: string; // expiration date string
-  personName: string;
-  leadName: string;
-  // Add quote items type here if needed
+    subject: string;
+    description: string;
+    salesOwnerId: string;
+    expiredAt: string; // expiration date string
+    person: PersonData;
+    leadName: string;
+    address: string;
+    countryCode: string; // e.g. 'IN'
+    stateCode: string;   // e.g. 'DL'
+    city: string;
+    postcode: string;
+    product: ProductData;
+    // Add quote items type here if needed
 };
 
-export type Address = {
-  address: string;
-  countryCode: string; // e.g. 'IN'
-  stateCode: string;   // e.g. 'DL'
-  city: string;
-  postcode: string;
+export const sampleQuoteData: QuoteData = {
+    subject: generateFullName(),
+    description: generateDescription(),
+    salesOwnerId: "1",
+    expiredAt: "2026-02-28",
+    person: personData,
+    leadName: "Corporate Website Lead",
+    address: "Plot 45, Industrial Area",
+    countryCode: "IN",
+    stateCode: "DL",
+    city: "New Delhi",
+    postcode: "110020",
+    product: productData,
+    // Optionally add quote items array if needed
 };
+
+
 
 
 export class QuotesPage extends CoreLocators {
@@ -83,50 +102,52 @@ export class QuotesPage extends CoreLocators {
 
 
     }
-    async navigateToQuotesPage()
-    {
+    async navigateToQuotesPage() {
         await this.page.goto("admin/quotes");
     }
 
-    async createQuote(quoteData:QuoteData,address:Address)
-    {
+    async createQuote(quoteData: QuoteData) {
+        const person = new PersonsPage(this.page);
+
+        await person.createPerson(quoteData.person);
 
         await this.navigateToQuotesPage();
         // Fill Quote Basics
-        this.createQuoteLink.click();
-  await this.subjectTextbox.fill(quoteData.subject);
-  await this.descriptionTextbox.fill(quoteData.description);
-  await this.salesOwnerSelect.selectOption(quoteData.salesOwnerId);
-  await this.expiredAtTextbox.fill(quoteData.expiredAt);
+        await this.createQuoteLink.click();
+        await this.subjectTextbox.fill(quoteData.subject);
+        await this.descriptionTextbox.fill(quoteData.description);
+        await this.salesOwnerSelect.selectOption(quoteData.salesOwnerId);
+        await this.expiredAtTextbox.fill(quoteData.expiredAt);
 
-  // Link to Person - Click to add and select person by name
-  await this.personOrgSelectDiv.click();
-  await this.searchTextbox.fill(quoteData.personName);
-  (await this.selectListItmeByName(quoteData.personName)).click(); // or select existing if applicable
+        // Link to Person - Click to add and select person by name
+        await this.quoteAddPersonButton.click();
+        await this.searchTextbox.fill(quoteData.person.name);
+        await this.page.waitForTimeout(1000);
+        await this.quoteSelectListPerson.click(); // or select existing if applicable
 
-  // Link to Lead - Click to add and select lead by name
-  await this.page.locator('div').filter({ hasText: /^Click to add$/ }).nth(2).click();
-  await this.searchTextbox.fill(quoteData.leadName);
-  await this.page.getByText('Add as New').click(); // or select existing
+        // Link to Lead - Click to add and select lead by name
+        await this.quoteLinkToLeadButton.click();
+        await this.searchTextbox.fill(quoteData.leadName);
+        await this.addAsNewButton.click(); // or select existing
 
-  // Fill Billing Address
-  await this.page('textarea[name="billing_address\\[address\\]"]').fill(address.address);
-  await this.billingCountrySelect.selectOption(address.countryCode);
-  await this.billingStateSelect.selectOption(address.stateCode);
-  await this.billingCityInput.fill(address.city);
-  await this.billingPostcodeInput.fill(address.postcode);
+        // Fill Billing Address
+        await this.billingAddressTextarea.fill(quoteData.address);
+        await this.billingCountrySelect.selectOption(quoteData.countryCode);
+        await this.billingStateSelect.selectOption(quoteData.stateCode);
+        await this.billingCityInput.fill(quoteData.city);
+        await this.billingPostcodeInput.fill(quoteData.postcode);
 
-  // Fill Shipping Address
-  await this.page.locator('textarea[name="shipping_address\\[address\\]"]').fill(address.address);
-  await this.shippingCountrySelect.selectOption(address.countryCode);
-  await this.shippingStateSelect.selectOption(address.stateCode);
-  await this.shippingCityInput.fill(address.city);
-  await this.shippingPostcodeInput.fill(address.postcode);
+        // Fill Shipping Address
+        await this.shippingAddressTextarea.fill(quoteData.address);
+        await this.shippingCountrySelect.selectOption(quoteData.countryCode);
+        await this.shippingStateSelect.selectOption(quoteData.stateCode);
+        await this.shippingCityInput.fill(quoteData.city);
+        await this.shippingPostcodeInput.fill(quoteData.postcode);
 
-  // TODO: Add quote items filling logic here as per your application structure
+        // TODO: Add quote items filling logic here as per your application structure
 
-  // Save the quote
-  await this.saveQuoteButton.click();
+        // Save the quote
+        await this.saveQuoteButton.click();
 
     }
 }
