@@ -1,5 +1,5 @@
 import { test, expect } from "../fixtures/AdminFixtures";
-import { AdminPage } from "../pages/admin/AdminPage";
+import { AdminPage } from "../pages/AdminPage";
 
 
 test.describe("admin mangement", async () => {

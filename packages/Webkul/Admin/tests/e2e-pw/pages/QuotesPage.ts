@@ -1,8 +1,8 @@
 import { Locator, Page } from "@playwright/test";
-import CoreLocators from "../../locator/CoreLocators";
-import { productData, ProductData } from "../products/ProductPage";
-import { generateDescription, generateFullName } from "../../utils/faker";
-import PersonsPage, { PersonData, personData } from "../persons/PersonsPage";
+import CoreLocators from "../locator/CoreLocators";
+import { productData, ProductData } from "./ProductPage";
+import { generateDescription, generateFullName } from "../utils/faker";
+import PersonsPage, { PersonData, personData } from "./PersonsPage";
 export type QuoteData = {
     subject: string;
     description: string;

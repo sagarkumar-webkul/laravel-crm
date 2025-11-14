@@ -1,6 +1,6 @@
 import { Page, Locator, expect } from "@playwright/test";
 import { allowedNodeEnvironmentFlags } from "process";
-import CoreLocators from "../../locator/CoreLocators";
+import CoreLocators from "../locator/CoreLocators";
 
 export class AdminPage extends CoreLocators {
     readonly page: Page;
@@ -22,7 +22,7 @@ export class AdminPage extends CoreLocators {
         this.signOutLink = page.getByRole("link", { name: "Sign Out" });
     }
 
-  
+
 
     async adminLogin(email: string, password: string) {
         await this.page.goto('admin/login');
@@ -39,7 +39,7 @@ export class AdminPage extends CoreLocators {
         await this.page.waitForTimeout(1000);
         await this.profileButton.click();
         await this.signOutLink.click();
-    
+
     }
 
     async verifyLogout() {

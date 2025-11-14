@@ -1,9 +1,9 @@
 import { Locator, Page } from "playwright/test";
 
 type ElementType = "button" | "textbox" | "link";
+
 export default class CoreLocators {
     readonly page: Page;
-
 
     // Person Locators
     readonly createPersonLink: Locator;
@@ -15,7 +15,6 @@ export default class CoreLocators {
     readonly personOrgSelectDiv: Locator;
     readonly personOrgSearchTextbox: Locator;
     readonly personOrgListItem: (text: string) => Locator;
-
 
     // Links and buttons
     readonly createOrgLink: Locator;
@@ -102,7 +101,6 @@ export default class CoreLocators {
 
     readonly addPersonButton: Locator;
 
-
     // Textboxes - date or specialized text input
     readonly expiredAtTextbox: Locator;
     readonly leadExpectedCloseDateInput: Locator;
@@ -144,18 +142,16 @@ export default class CoreLocators {
     readonly userRoleSelect: Locator;
     readonly userViewPermissionSelect: Locator;
     readonly userGroupListbox: Locator;
-    readonly organizationSelectSearchTextbox: Locator; // For search in org add extra details modal
+    readonly organizationSelectSearchTextbox: Locator;
     readonly leadProductAddMoreButton: Locator;
-    readonly quoteLinkToLeadButton:Locator;
+    readonly quoteLinkToLeadButton: Locator;
+
     // Search related list item selector
     readonly personListItem: (name: string) => Locator;
 
-
-    readonly quoteAddPersonButton:Locator
-    readonly addAsNewButton:Locator
-
-    readonly quoteSelectListPerson:Locator
-    
+    readonly quoteAddPersonButton: Locator;
+    readonly addAsNewButton: Locator;
+    readonly quoteSelectListPerson: Locator;
 
     // Edit and delete icons
     readonly firstEditIcon: Locator;
@@ -174,6 +170,60 @@ export default class CoreLocators {
 
     // Profile and logout buttons
     readonly profileButton: Locator;
+    // Lead
+    readonly createLeadButton: Locator;
+
+    // Lead form
+    readonly titleInput: Locator;
+    readonly descriptionTextarea: Locator;
+    readonly sourceDropdown: Locator;
+    readonly expectedCloseDate: Locator;
+    readonly typeDropdown: Locator;
+    readonly userDropdown: Locator;
+    readonly searchInput: Locator;
+    readonly listSearchInput: Locator;
+
+    // Add person
+    readonly personSearchInput: Locator;
+    readonly personEmailInput: Locator;
+    readonly personPhoneInput: Locator;
+
+    // Add organization
+    readonly addOrganizationButton: Locator;
+    readonly organizationSearchInput: Locator;
+
+    // General
+    readonly leadSuccessToast: Locator;
+    readonly editLeadButton: Locator;
+    readonly listViewButton: Locator;
+    readonly deleteLeadButton: Locator;
+
+    // Tabs
+    readonly mailButton: Locator;
+    readonly fileButton: Locator;
+    readonly noteButton: Locator;
+    readonly activityButton: Locator;
+
+    // Mail
+    readonly mailToInput: Locator;
+    readonly mailSubjectInput: Locator;
+    readonly mailBodyTextarea: Locator;
+    readonly sendMailButton: Locator;
+
+    // File
+
+    // Note
+
+    // Activity
+    readonly addActivityTitleInput: Locator;
+    readonly addActivityCommentTextarea: Locator;
+    readonly scheduleFromInput: Locator;
+    readonly scheduleToInput: Locator;
+    readonly locationInput: Locator;
+
+    // Validation message
+    readonly expectedCloseDateMustBeDateAfter: Locator;
+
 
     // Other
     readonly appLocator: Locator;
@@ -200,26 +250,25 @@ export default class CoreLocators {
         this.saveGroupButton = page.getByRole("button", { name: "Save Group" });
         this.createUserButton = page.getByRole("button", { name: "Create User" });
         this.saveUserButton = page.getByRole("button", { name: "Save User" });
-        this.composeMailButton = page.getByRole('button', { name: 'Compose Mail' });
-        this.createOrganizationButton = page.getByRole('link', { name: 'Create Organization' });
+        this.composeMailButton = page.getByRole("button", { name: "Compose Mail" });
+        this.createOrganizationButton = page.getByRole("link", { name: "Create Organization" });
         this.saveOrganizationButton = page.getByRole("button", { name: "Save Organization" });
-        this.deleteButton = page.getByRole('button', { name: 'Delete' });
-        this.leadProductSelect = page.locator('#products').getByText('Click to Add');
-        this.leadProductAddMoreButton = page.locator('//button[@class="flex max-w-max items-center gap-2 text-brandColor"]')
-        this.leadOrganizationSelect = page.locator('div').filter({ hasText: /^Click to add$/ }).nth(2);
-        
-        this.addPersonButton = page.locator('div', { hasText: /^Click to Add$/ }).nth(1);
+        this.deleteButton = page.getByRole("button", { name: "Delete" });
+        this.leadProductSelect = page.locator("#products").getByText("Click to Add");
+        this.leadProductAddMoreButton = page.locator('//button[@class="flex max-w-max items-center gap-2 text-brandColor"]');
+        this.leadOrganizationSelect = page.locator("div").filter({ hasText: /^Click to add$/ }).nth(2);
+        this.addPersonButton = page.locator("div", { hasText: /^Click to Add$/ }).nth(1);
+        this.quoteAddPersonButton = page.locator(".relative.flex.items-center.justify-between").first();
 
-        this.quoteAddPersonButton= page.locator('.relative.flex.items-center.justify-between').first();
         // Links
         this.createQuoteLink = page.getByRole("link", { name: "Create Quote" });
         this.createProductLink = page.getByRole("link", { name: "Create Product" });
         this.createLeadLink = page.getByRole("link", { name: "Create Lead" });
         this.signOutLink = page.getByRole("link", { name: "Sign Out" });
-        this.createOrganizationLink = page.getByRole('link', { name: 'Create Organization' });
+        this.createOrganizationLink = page.getByRole("link", { name: "Create Organization" });
 
-        this.addAsNewButton = page.getByText('Add as New');
-        this.quoteSelectListPerson=page.locator(`(//li[@class="flex cursor-pointer gap-2 p-2 transition-colors hover:bg-blue-100 dark:text-gray-300 dark:hover:bg-gray-900"])[1]`);
+        this.addAsNewButton = page.getByText("Add as New");
+        this.quoteSelectListPerson = page.locator(`(//li[@class="flex cursor-pointer gap-2 p-2 transition-colors hover:bg-blue-100 dark:text-gray-300 dark:hover:bg-gray-900"])[1]`);
 
         // Textboxes - single line text input fields
         this.subjectTextbox = page.getByRole("textbox", { name: "Subject *" });
@@ -301,7 +350,7 @@ export default class CoreLocators {
         this.firstEditIcon = page.locator("span.cursor-pointer.icon-edit").first();
         this.firstDeleteIcon = page.locator("span.cursor-pointer.icon-delete").first();
 
-        this.quoteLinkToLeadButton=page.locator('div:nth-child(2) > div > .relative.inline-block > .relative');
+        this.quoteLinkToLeadButton = page.locator('div:nth-child(2) > div > .relative.inline-block > .relative');
 
         // Activity modal selectors
         this.addActivityButton = page.getByRole("button", { name: " Activity" });
@@ -319,8 +368,6 @@ export default class CoreLocators {
 
         // Organization Locators Initialization
         this.createOrgLink = page.getByRole('link', { name: 'Create Organization' });
-
-
         this.orgNameTextbox = page.getByRole('textbox', { name: 'Name *' });
         this.orgAddressTextarea = page.locator('textarea[name="address\\[address\\]"]');
         this.orgCountryCombobox = page.getByRole('combobox');
@@ -343,22 +390,83 @@ export default class CoreLocators {
         this.personOrgListItem = (text: string) => page.getByRole('listitem').filter({ hasText: text });
 
 
+        // Lead
+        this.createLeadButton = page.getByRole('link', { name: 'Create Lead' });
+
+        // Lead form
+        this.titleInput = page.getByRole('textbox', { name: 'Title *' });
+        this.descriptionTextarea = page.locator('textarea[name="description"]');
+        this.sourceDropdown = page.locator('select[name="lead_source_id"]');
+        this.expectedCloseDate = page.locator('input[name="expected_close_date"]');
+        this.typeDropdown = page.locator('select[name="lead_type_id"]');
+        this.userDropdown = page.locator('select[name="user_id"]');
+        this.leadValueInput = page.locator('input[name="lead_value"]');
+        this.searchInput = page.getByRole('textbox', { name: 'Search by Title' });
+        this.listSearchInput = page.getByRole('textbox', { name: 'Search' });
+
+        // Add person
+        this.personSearchInput = page.getByRole('textbox', { name: 'Search...' });
+        this.personEmailInput = page.locator('input[name="person[emails][0][value]"]');
+        this.personPhoneInput = page.locator('input[name="person[contact_numbers][0][value]"]');
+
+        // Add organization
+        this.addOrganizationButton = page.locator('div', { hasText: /^Click to add$/ }).nth(2);
+        this.organizationSearchInput = page.getByRole('textbox', { name: 'Search...' });
+
+        this.saveLeadButton = page.getByRole('button', { name: 'Save' });
+
+        // General
+        this.leadSuccessToast = page.getByText('Success', { exact: true });
+        this.editLeadButton = page.getByRole('link', { name: '' }).first();
+        this.listViewButton = page.getByRole('link', { name: '' });
+        this.agreeButton = page.getByRole('button', { name: 'Agree', exact: true });
+        this.deleteLeadButton = page.locator(
+            '.cursor-pointer.rounded-md.p-1\\.5.text-2xl.transition-all.hover\\:bg-gray-200.dark\\:hover\\:bg-gray-800.max-sm\\:place-self-center.icon-delete'
+        ).first();
+
+        // Tabs
+        this.mailButton = page.getByRole('button', { name: ' Mail' });
+        this.fileButton = page.getByRole('button', { name: ' File' });
+        this.noteButton = page.getByRole('button', { name: ' Note' });
+        this.activityButton = page.getByRole('button', { name: ' Activity' });
+
+        // Mail
+        this.mailToInput = page.locator('input[name="temp-reply_to"]');
+        this.mailSubjectInput = page.locator('input[name="subject"]');
+        this.mailBodyTextarea = page.locator('textarea[name="reply"]');
+        this.sendMailButton = page.getByRole('button', { name: 'Send' });
+
+        // File
+        this.fileTitleInput = page.locator('input[name="title"]');
+        this.fileCommentTextarea = page.locator('textarea[name="comment"]');
+        this.fileNameInput = page.locator('input[name="name"]');
+        this.saveFileButton = page.getByRole('button', { name: 'Save File' });
+
+        // Note
+        this.noteCommentTextarea = page.locator('textarea[name="comment"]');
+        this.saveNoteButton = page.getByRole('button', { name: 'Save Note' });
+
+        // Activity
+        this.addActivityTitleInput = page.locator('input[name="title"]');
+        this.addActivityCommentTextarea = page.locator('textarea[name="comment"]');
+        this.scheduleFromInput = page.locator('input[name="schedule_from"]');
+        this.scheduleToInput = page.locator('input[name="schedule_to"]');
+        this.locationInput = page.locator('input[name="location"]');
+        this.saveActivityButton = page.getByRole('button', { name: 'Save Activity' });
+
+        // Validation message
+        this.expectedCloseDateMustBeDateAfter = page.getByText('The expected close date must be a date after');
+
+
         // Other
         this.appLocator = page.locator("#app");
     }
 
-
-
     async getElementByTypeAndName(type: ElementType, name: string) {
-
-        return this.page.getByRole(`${type}`, { name: `${name}`,exact:true});
-
+        return this.page.getByRole(`${type}`, { name: `${name}`, exact: true });
     }
+
     async selectListItmeByName(value: string) {
         return this.page.getByRole('listitem').filter({ hasText: `${value}` });
     }
-
-
-
-
 }

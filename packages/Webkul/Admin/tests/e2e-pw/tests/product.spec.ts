@@ -1,5 +1,5 @@
 import { test } from "../fixtures/AdminFixtures";
-import { productData, ProductPage } from "../pages/products/ProductPage";
+import { productData, ProductPage } from "../pages/ProductPage";
 
 test.describe("Product mangement",async()=>{
     test("verify create product",async({adminPage})=>{

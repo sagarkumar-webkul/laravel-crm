@@ -1,6 +1,6 @@
 import { Page } from "playwright/test";
-import CoreLocators from "../../locator/CoreLocators";
-import { generateFirstName, generateLocation, generateName } from "../../utils/faker";
+import CoreLocators from "../locator/CoreLocators";
+import { generateFirstName, generateLocation, generateName } from "../utils/faker";
 export type OrganizationData = {
     name: string;
     address: string;

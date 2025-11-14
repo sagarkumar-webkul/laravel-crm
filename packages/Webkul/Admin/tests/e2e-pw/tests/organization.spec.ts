@@ -1,6 +1,6 @@
 import { test } from "../fixtures/AdminFixtures";
-import OrganizationPage, { organizationData } from "../pages/organization/OrganizationPage";
-import { OrganizationData } from "../pages/organization/OrganizationPage";
+import OrganizationPage, { organizationData } from "../pages/OrganizationPage";
+import { OrganizationData } from "../pages/OrganizationPage";
 
 test.describe("organization mangement",async()=>{
 

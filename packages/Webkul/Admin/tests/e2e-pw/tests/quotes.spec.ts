@@ -1,10 +1,10 @@
 import { test } from "../fixtures/AdminFixtures";
-import { AdminPage } from "../pages/admin/AdminPage";
-import { LeadData, LeadPage } from "../pages/leads/LeadPage";
-import OrganizationPage, { OrganizationData } from "../pages/organization/OrganizationPage";
-import PersonsPage, { PersonData } from "../pages/persons/PersonsPage";
-import { ProductPage } from "../pages/products/ProductPage";
-import { QuotesPage, sampleQuoteData } from "../pages/quotes/QuotesPage";
+import { AdminPage } from "../pages/AdminPage";
+import { LeadData, LeadPage } from "../pages/LeadPage";
+import OrganizationPage, { OrganizationData } from "../pages/OrganizationPage";
+import PersonsPage, { PersonData } from "../pages/PersonsPage";
+import { ProductPage } from "../pages/ProductPage";
+import { QuotesPage, sampleQuoteData } from "../pages/QuotesPage";
 import { generateDescription, generateEmail, generateLocation, generateName, generatePhoneNumber, generateSKU } from "../utils/faker";
 
 test.describe("quotes mangement", async () => {
