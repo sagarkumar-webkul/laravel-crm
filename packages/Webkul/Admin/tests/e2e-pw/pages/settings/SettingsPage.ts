@@ -26,17 +26,17 @@ export class SettingsPage extends CoreLocators {
 
     // Email Templates
     async navigateToEmailTemplates() {
-        await this.page.goto("admin/settings/email-templates");
+        await this.page.goto("admin/settings/marketing/email-templates");
     }
 
     // Events
     async navigateToEvents() {
-        await this.page.goto("admin/settings/events");
+        await this.page.goto("admin/settings/marketing/events");
     }
 
     // Campaigns
     async navigateToCampaigns() {
-        await this.page.goto("admin/settings/campaigns");
+        await this.page.goto("admin/settings/marketing/campaigns");
     }
 
     // Webhooks

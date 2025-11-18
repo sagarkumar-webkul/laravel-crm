@@ -1,3 +1,4 @@
+import { LegacyCharacterEncoding } from "crypto";
 import { Locator, Page } from "playwright/test";
 
 type ElementType = "button" | "textbox" | "link";
@@ -156,6 +157,8 @@ export default class CoreLocators {
     // Edit and delete icons
     readonly firstEditIcon: Locator;
     readonly firstDeleteIcon: Locator;
+    // Multi select checkbox
+    readonly multiSelectCheckbox:Locator;
 
     // Activity modal selectors
     readonly addActivityButton: Locator;
@@ -197,7 +200,7 @@ export default class CoreLocators {
     readonly editLeadButton: Locator;
     readonly listViewButton: Locator;
     readonly deleteLeadButton: Locator;
-
+    readonly noRecordsAvailable:Locator
     // Tabs
     readonly mailButton: Locator;
     readonly fileButton: Locator;
@@ -223,6 +226,7 @@ export default class CoreLocators {
 
     // Validation message
     readonly expectedCloseDateMustBeDateAfter: Locator;
+
 
 
     // Other
@@ -308,6 +312,8 @@ export default class CoreLocators {
         this.activityScheduleToInput = page.locator('input[name="schedule_to"]');
         this.eventDateInput = page.locator('input[name="date"]');
 
+        this.noRecordsAvailable = page.getByText('No Records Available.')
+
         // Textareas - multi-line input fields
         this.billingAddressTextarea = page.locator('textarea[name="billing_address\\[address\\]"]');
         this.shippingAddressTextarea = page.locator('textarea[name="shipping_address\\[address\\]"]');
@@ -349,6 +355,9 @@ export default class CoreLocators {
         // Edit and delete icons
         this.firstEditIcon = page.locator("span.cursor-pointer.icon-edit").first();
         this.firstDeleteIcon = page.locator("span.cursor-pointer.icon-delete").first();
+
+        //mass delte checkbox
+        this.multiSelectCheckbox= page.locator('.icon-checkbox-outline').first();
 
         this.quoteLinkToLeadButton = page.locator('div:nth-child(2) > div > .relative.inline-block > .relative');
 
@@ -460,6 +469,11 @@ export default class CoreLocators {
 
         // Other
         this.appLocator = page.locator("#app");
+    }
+    async searchByName(name:string)
+    {
+        (await this.getElementByTypeAndName('textbox','Search')).fill(name);
+        await this.page.keyboard.press('Enter');
     }
 
     async getElementByTypeAndName(type: ElementType, name: string) {

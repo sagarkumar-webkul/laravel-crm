@@ -2,15 +2,15 @@ import { Page, Locator, expect } from '@playwright/test';
 import { SettingsPage } from '../SettingsPage';
 import { generateDescription, generateFullName, generateRandomDateTime } from '../../../utils/faker';
 
-type EventData={
-    name:string,
-    description:string,
-    date:string
+export type EventData = {
+    name: string,
+    description: string,
+    date: string
 }
-export const eventdata:EventData={
-    name:generateFullName(),
-    description:generateDescription(),
-    date:"2025-11-18",
+export const eventdata: EventData = {
+    name: generateFullName(),
+    description: generateDescription(),
+    date: "2027-11-18",
 }
 
 export class EventsPage extends SettingsPage {
@@ -39,26 +39,42 @@ export class EventsPage extends SettingsPage {
         this.successMessage = page.getByText(/Event (created|updated|deleted) successfully./);
     }
 
-    async gotoEventsPage() {
-        await this.page.goto('admin/settings/marketing/events');
-    }
+    async createEvent(eventdata: EventData) {
 
-    async openCreateEventModal() {
         await this.createEventButton.click();
-    }
-
-    async createEvent(eventdata:EventData) {
         await this.nameInput.fill(eventdata.name);
         await this.descriptionTextarea.fill(eventdata.name);
         await this.dateInput.fill(eventdata.date);
         await this.saveEventButton.click();
         await expect(this.successMessage).toBeVisible();
-        (await this.getElementByTypeAndName('textbox','Search')).fill(eventdata.name);
-        await this.page.keyboard.press('Enter');
-        await this.page.
-        
+
+    }
+    async massDeleteEvents()
+    { 
+      await this.multiSelectCheckbox.click()
+      await this.deleteButton.click();
+      await this.agreeButton.click();
+      await expect(this.noRecordsAvailable).toBeVisible();
+
+    }
+    async editEvents(eventData:EventData)
+    {
+    
+        await this.firstEditIcon.click();
+        await this.nameInput.fill(eventdata.name);
+        await this.descriptionTextarea.fill(eventdata.name);
+        await this.dateInput.fill(eventdata.date);
+        await this.saveEventButton.click();
+        await expect(this.successMessage).toBeVisible();
+    }
+    async deleteEvent()
+    {
+       await this.deleteFirstEventButton.click();
+       await this.agreeButton.click();
+       await expect(this.successMessage).toBeVisible();
 
     }
 
-  
+
+
 }
