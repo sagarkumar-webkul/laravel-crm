@@ -200,7 +200,7 @@ export default class CoreLocators {
     readonly editLeadButton: Locator;
     readonly listViewButton: Locator;
     readonly deleteLeadButton: Locator;
-    readonly noRecordsAvailable:Locator
+    readonly noRecordsAvailable: Locator
     // Tabs
     readonly mailButton: Locator;
     readonly fileButton: Locator;
@@ -357,7 +357,7 @@ export default class CoreLocators {
         this.firstDeleteIcon = page.locator("span.cursor-pointer.icon-delete").first();
 
         //mass delte checkbox
-        this.multiSelectCheckbox= page.locator('.icon-checkbox-outline').first();
+        this.multiSelectCheckbox = page.locator('.icon-checkbox-outline').first();
 
         this.quoteLinkToLeadButton = page.locator('div:nth-child(2) > div > .relative.inline-block > .relative');
 
@@ -470,9 +470,8 @@ export default class CoreLocators {
         // Other
         this.appLocator = page.locator("#app");
     }
-    async searchByName(name:string)
-    {
-        (await this.getElementByTypeAndName('textbox','Search')).fill(name);
+    async searchByName(name: string) {
+        (await this.getElementByTypeAndName('textbox', 'Search')).fill(name);
         await this.page.keyboard.press('Enter');
     }
 

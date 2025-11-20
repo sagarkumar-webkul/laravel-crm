@@ -35,7 +35,6 @@ export default class OrganizationPage extends CoreLocators{
     async createOrganization(orgData:OrganizationData) {
    
     await this.navigateToOrganization();
-
   
     await this.createOrgLink.click();
 
@@ -58,6 +57,37 @@ export default class OrganizationPage extends CoreLocators{
     // Save organization
     await this.saveOrganizationButton.click();
     return orgData;
+    }
+    async updateOrganization(orgData:OrganizationData)
+    {
+    
+    
+    await this.firstEditIcon.click();
+    // Fill organization details
+    await this.orgNameTextbox.fill(orgData.name);
+    await this.orgAddressTextarea.fill(orgData.address);
+
+    await this.orgCountryCombobox.first().selectOption(orgData.country);
+    await this.orgStateSelect.selectOption(orgData.state);
+
+    await this.orgCityTextbox.fill(orgData.city);
+    await this.orgPostcodeTextbox.fill(orgData.postcode);
+
+    await this.orgExtraDetailsDiv.nth(2).click();
+
+    await this.orgSearchTextbox.fill('exampl');
+    await this.orgExampleListItem('Example').click();
+
+
+    // Save organization
+    await this.saveOrganizationButton.click();
+    return orgData;
+
+    }
+
+    async deleteOrganization(){
+       await this.firstDeleteIcon.click();
+       await this.agreeButton.click();
     }
     
 
