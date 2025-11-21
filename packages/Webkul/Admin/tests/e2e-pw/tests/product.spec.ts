@@ -8,9 +8,5 @@ test.describe("Product mangement",async()=>{
 
        await product.createProduct(productData);
 
-
-
-
-
     });
 })

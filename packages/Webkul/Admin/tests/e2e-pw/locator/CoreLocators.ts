@@ -1,5 +1,5 @@
 import { LegacyCharacterEncoding } from "crypto";
-import { Locator, Page } from "playwright/test";
+import { expect, Locator, Page } from "playwright/test";
 
 type ElementType = "button" | "textbox" | "link";
 
@@ -158,7 +158,7 @@ export default class CoreLocators {
     readonly firstEditIcon: Locator;
     readonly firstDeleteIcon: Locator;
     // Multi select checkbox
-    readonly multiSelectCheckbox:Locator;
+    readonly multiSelectCheckbox: Locator;
 
     // Activity modal selectors
     readonly addActivityButton: Locator;
@@ -190,10 +190,12 @@ export default class CoreLocators {
     readonly personSearchInput: Locator;
     readonly personEmailInput: Locator;
     readonly personPhoneInput: Locator;
+    readonly successMessage: Locator;
 
     // Add organization
     readonly addOrganizationButton: Locator;
     readonly organizationSearchInput: Locator;
+    readonly organizationCreateSuccessMessage: Locator;
 
     // General
     readonly leadSuccessToast: Locator;
@@ -417,12 +419,14 @@ export default class CoreLocators {
         this.personSearchInput = page.getByRole('textbox', { name: 'Search...' });
         this.personEmailInput = page.locator('input[name="person[emails][0][value]"]');
         this.personPhoneInput = page.locator('input[name="person[contact_numbers][0][value]"]');
+        this.successMessage = page.getByText('Success');
 
         // Add organization
         this.addOrganizationButton = page.locator('div', { hasText: /^Click to add$/ }).nth(2);
         this.organizationSearchInput = page.getByRole('textbox', { name: 'Search...' });
 
         this.saveLeadButton = page.getByRole('button', { name: 'Save' });
+        this.organizationCreateSuccessMessage = page.getByText('Organization created successfully');
 
         // General
         this.leadSuccessToast = page.getByText('Success', { exact: true });
@@ -482,4 +486,12 @@ export default class CoreLocators {
     async selectListItmeByName(value: string) {
         return this.page.getByRole('listitem').filter({ hasText: `${value}` });
     }
+    async massDelete() {
+        await this.multiSelectCheckbox.click();
+        await this.deleteButton.click();
+        await this.agreeButton.click();
+        await expect(this.noRecordsAvailable).toBeVisible();
+
+    }
+
 }

@@ -1,4 +1,4 @@
-import { Page } from "playwright/test";
+import { expect, Page } from "playwright/test";
 import CoreLocators from "../locator/CoreLocators";
 import { generateEmail, generateFullName, generateName, generatePhoneNumber } from "../utils/faker";
 import { organizationData } from "../pages/OrganizationPage";
@@ -33,7 +33,6 @@ export default class PersonsPage extends CoreLocators {
     }
     async createPerson(personData: PersonData) {
 
-        await this.navigageToPersonsPage();
         await this.createPersonLink.click();
 
         // Fill person details (use first email/phone if multiple provided)
@@ -52,11 +51,53 @@ export default class PersonsPage extends CoreLocators {
             await (await this.getElementByTypeAndName('textbox', 'Search...')).fill("Examp");
             await this.personOrgListItem("Examp").click();
         }
-
         // Save person
         await this.savePersonButton.click();
+        await this.searchByName(personData.name);
+        await expect(this.page.getByText(personData.name).first()).toBeVisible();
 
     }
+    async updatePerson(personData:PersonData)
+    {
+        await this.searchByName(personData.name);
+        await this.firstEditIcon.click();
+          // Fill person details (use first email/phone if multiple provided)
+        await this.personNameTextbox.fill(personData.name);
+        if (personData.emails && personData.emails.length > 0) {
+            await this.personEmailTextbox.fill(personData.emails);
+        }
+        if (personData.contactNumber && personData.contactNumber.length > 0) {
+            await this.personPhoneTextbox.fill(personData.contactNumber);
+        }
+        await this.personJobTitleTextbox.fill(personData.jobTitle || "");
+
+        // Assign organization (if provided)
+        if (personData.organizationName) {
+            await this.personOrgSelectDiv.click();
+            await (await this.getElementByTypeAndName('textbox', 'Search...')).fill("Examp");
+            await this.personOrgListItem("Examp").click();
+        }
+        // Save person
+        await this.savePersonButton.click();
+        await this.searchByName(personData.name);
+        await expect(this.page.getByText(personData.name).first()).toBeVisible();
+
+    }
+    async personDelete()
+    {
+    
+        await this.firstDeleteIcon.click();
+        await this.agreeButton.click();
+        await expect(this.successMessage.first()).toBeVisible();
+    }
+    async personMassDelete()
+    {   
+        await this.multiSelectCheckbox.click();
+        await this.deleteButton.click();
+        await this.agreeButton.click();
+        await expect(this.successMessage.first()).toBeVisible();
+    }
+
 
 
 }
