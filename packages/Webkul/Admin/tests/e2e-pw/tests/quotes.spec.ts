@@ -52,7 +52,7 @@ test.describe("quotes mangement", async () => {
        const product= new ProductPage(adminPage);
 
       //  await lead.createLead(leadData);
-
+      await quote.navigateToQuotesPage();
       await quote.createQuote(sampleQuoteData);
 
        

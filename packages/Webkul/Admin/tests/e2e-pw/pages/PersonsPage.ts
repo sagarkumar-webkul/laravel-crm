@@ -53,13 +53,15 @@ export default class PersonsPage extends CoreLocators {
         }
         // Save person
         await this.savePersonButton.click();
-        await this.searchByName(personData.name);
+        await (await this.getElementByTypeAndName('textbox','Search')).fill(personData.name);
+        await this.page.keyboard.press('Enter');
         await expect(this.page.getByText(personData.name).first()).toBeVisible();
 
     }
     async updatePerson(personData:PersonData)
     {
-        await this.searchByName(personData.name);
+        await this.searchInputExact.fill(personData.name);
+        await this.page.keyboard.press('Enter');
         await this.firstEditIcon.click();
           // Fill person details (use first email/phone if multiple provided)
         await this.personNameTextbox.fill(personData.name);

@@ -47,7 +47,7 @@ export default class OrganizationPage extends CoreLocators{
 
     await this.orgExtraDetailsDiv.nth(2).click();
 
-    await this.orgSearchTextbox.fill('exampl');
+    await this.searchInputField.fill('exampl');
     await this.orgExampleListItem('Example').click();
 
 

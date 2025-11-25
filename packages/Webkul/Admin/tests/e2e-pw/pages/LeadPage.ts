@@ -40,6 +40,7 @@ export class LeadPage extends CoreLocators {
     }
     async createLead(leadData: LeadData) {
         const productPage = new ProductPage(this.page);
+        await productPage.navigateToProductPage();
         await productPage.createProduct(leadData.product);
 
         await this.navigateToLeadList();
@@ -53,7 +54,7 @@ export class LeadPage extends CoreLocators {
         await this.leadValueInput.fill(leadData.value);
 
         await this.addPersonButton.click();
-        await this.personSearchInput.fill(leadData.person.name);
+        await this.searchInputField.fill(leadData.person.name);
         const personItem = (await this.selectListItmeByName(leadData.person.name)).first();
         await this.page.waitForTimeout(1000);
         const isPersonAlreadyPresent = await personItem.isVisible();
@@ -68,7 +69,7 @@ export class LeadPage extends CoreLocators {
             await this.personEmailInput.fill(leadData.person.emails);
             await this.personPhoneInput.fill(leadData.person.contactNumber);
             await this.addOrganizationButton.click();                 // this an issue add organiztion is not working if person allready present so that i have added this into else condition.
-            await this.organizationSearchInput.fill(leadData.title);
+            await this.searchInputField.fill(leadData.title);
             await this.addAsNewButton.click();
 
         }
@@ -79,11 +80,70 @@ export class LeadPage extends CoreLocators {
         (await this.getElementByTypeAndName('button', "Save")).click();
         await this.searchInput.fill(leadData.title);
         await this.page.keyboard.press('Enter');
-        await expect((await this.getLeadByTitle(leadData.title))).toBeVisible();
+        await expect(this.page.getByText(leadData.title).first()).toBeVisible();
 
 
         await expect(this.leadSuccessToast).toBeVisible();
 
+    }
+    async updateLead(leadData: LeadData) {
+
+
+        // Now update the lead with new data
+
+        // Fill updated lead data
+ 
+     
+
+       
+        // Use locators from LeadPage via page1 context to fill fields
+        await this.titleInput.fill(leadData.title);
+        await this.descriptionTextarea.fill(leadData.description);
+        await this.sourceDropdown.selectOption("1");
+        await this.typeDropdown.selectOption("1");
+        await this.userDropdown.selectOption("1");
+        await this.leadValueInput.fill("1000");
+        (await this.getElementByTypeAndName('button', "Save")).click();
+        await this.searchInput.fill(leadData.title);
+        await this.page.keyboard.press('Enter');
+        await expect(((await this.getLeadByTitle(leadData.title)).first())).toBeVisible();
+
+        await expect(this.leadSuccessToast).toBeVisible();
+
+    }
+
+    async deleteLead()
+    {
+        await this.listViewButton.click();
+
+        (await this.getElementByTypeAndName('textbox', 'Search')).fill(leadData.title);
+        await this.page.keyboard.press('Enter');
+        await this.deleteLeadButton.isVisible();
+        await this.deleteLeadButton.click();
+        await (await this.getElementByTypeAndName('button', 'Agree')).click();
+        (await this.getElementByTypeAndName('textbox', 'Search')).fill(leadData.title);
+        await this.page.keyboard.press('Enter');
+        await expect(this.deleteLeadButton).not.toBeVisible();
+    }
+    async searchLead(title:string)
+    {
+        await this.searchInput.fill(leadData.title);
+        await this.page.keyboard.press('Enter');
+
+           await Promise.all([
+            this.page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+            (await this.getLeadByTitle(leadData.title)).click(),
+        ]);
+        const page1Promise = this.page.waitForEvent('popup');
+        await this.editLeadButton.click();
+        const page1 = await page1Promise;
+        const leadPage = new LeadPage(page1);
+        return leadPage;
+
+    }
+    async listView()
+    {
+        this.page.goto('admin/leads?view_type=table');
     }
 
 

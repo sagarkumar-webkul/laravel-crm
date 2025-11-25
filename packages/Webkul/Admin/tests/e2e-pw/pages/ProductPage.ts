@@ -35,7 +35,6 @@ export class ProductPage extends CoreLocators {
   }
   async createProduct(productdata: ProductData) {
 
-    await this.navigateToProductPage()
 
     // Click "Create Product"
     await this.createProductLink.click();

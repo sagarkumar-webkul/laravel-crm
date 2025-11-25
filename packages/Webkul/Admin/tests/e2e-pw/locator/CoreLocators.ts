@@ -14,7 +14,6 @@ export default class CoreLocators {
     readonly personPhoneTextbox: Locator;
     readonly personJobTitleTextbox: Locator;
     readonly personOrgSelectDiv: Locator;
-    readonly personOrgSearchTextbox: Locator;
     readonly personOrgListItem: (text: string) => Locator;
 
     // Links and buttons
@@ -25,7 +24,6 @@ export default class CoreLocators {
     readonly orgNameTextbox: Locator;
     readonly orgCityTextbox: Locator;
     readonly orgPostcodeTextbox: Locator;
-    readonly orgSearchTextbox: Locator;
 
     // Textareas
     readonly orgAddressTextarea: Locator;
@@ -71,7 +69,7 @@ export default class CoreLocators {
     // Textboxes - single line text input fields
     readonly subjectTextbox: Locator;
     readonly descriptionTextbox: Locator;
-    readonly searchTextbox: Locator;
+    readonly searchInputField: Locator;
     readonly productNameTextbox: Locator;
     readonly productPriceInput: Locator;
     readonly productQuantityInput: Locator;
@@ -143,7 +141,6 @@ export default class CoreLocators {
     readonly userRoleSelect: Locator;
     readonly userViewPermissionSelect: Locator;
     readonly userGroupListbox: Locator;
-    readonly organizationSelectSearchTextbox: Locator;
     readonly leadProductAddMoreButton: Locator;
     readonly quoteLinkToLeadButton: Locator;
 
@@ -187,14 +184,12 @@ export default class CoreLocators {
     readonly listSearchInput: Locator;
 
     // Add person
-    readonly personSearchInput: Locator;
     readonly personEmailInput: Locator;
     readonly personPhoneInput: Locator;
     readonly successMessage: Locator;
 
     // Add organization
     readonly addOrganizationButton: Locator;
-    readonly organizationSearchInput: Locator;
     readonly organizationCreateSuccessMessage: Locator;
 
     // General
@@ -203,6 +198,7 @@ export default class CoreLocators {
     readonly listViewButton: Locator;
     readonly deleteLeadButton: Locator;
     readonly noRecordsAvailable: Locator
+    readonly searchInputExact:Locator;
     // Tabs
     readonly mailButton: Locator;
     readonly fileButton: Locator;
@@ -279,7 +275,7 @@ export default class CoreLocators {
         // Textboxes - single line text input fields
         this.subjectTextbox = page.getByRole("textbox", { name: "Subject *" });
         this.descriptionTextbox = page.getByRole("textbox", { name: "Description" });
-        this.searchTextbox = page.getByRole("textbox", { name: "Search..." });
+
         this.productNameTextbox = page.getByRole("textbox", { name: "Name *" });
         this.productPriceInput = page.locator('input[name="price"]');
         this.productQuantityInput = page.locator('input[name="quantity"]');
@@ -349,7 +345,6 @@ export default class CoreLocators {
         this.userRoleSelect = page.locator('select[name="role_id"]');
         this.userViewPermissionSelect = page.locator('select[name="view_permission"]');
         this.userGroupListbox = page.getByRole('listbox');
-        this.organizationSelectSearchTextbox = page.getByRole('textbox', { name: 'Search...' });
 
         // Search related list item selector
         this.personListItem = (name: string) => page.getByRole("listitem").filter({ hasText: name });
@@ -385,7 +380,7 @@ export default class CoreLocators {
         this.orgStateSelect = page.locator('select[name="address\\[state\\]"]');
         this.orgCityTextbox = page.getByRole('textbox', { name: 'City' });
         this.orgPostcodeTextbox = page.getByRole('textbox', { name: 'Postcode' });
-        this.orgSearchTextbox = page.getByRole('textbox', { name: 'Search...' });
+
         this.orgExtraDetailsDiv = page.locator('div').filter({ hasText: /^Click to add$/ });
         this.orgExampleListItem = (text: string) => page.getByRole('listitem').filter({ hasText: text });
 
@@ -397,7 +392,7 @@ export default class CoreLocators {
         this.personPhoneTextbox = page.getByRole('textbox', { name: 'Contact Numbers' });
         this.personJobTitleTextbox = page.getByRole('textbox', { name: 'Job Title' });
         this.personOrgSelectDiv = page.locator('.relative > div > .relative').first();
-        this.personOrgSearchTextbox = page.getByRole('textbox', { name: 'Search...' });
+
         this.personOrgListItem = (text: string) => page.getByRole('listitem').filter({ hasText: text });
 
 
@@ -416,19 +411,20 @@ export default class CoreLocators {
         this.listSearchInput = page.getByRole('textbox', { name: 'Search' });
 
         // Add person
-        this.personSearchInput = page.getByRole('textbox', { name: 'Search...' });
+  
         this.personEmailInput = page.locator('input[name="person[emails][0][value]"]');
         this.personPhoneInput = page.locator('input[name="person[contact_numbers][0][value]"]');
         this.successMessage = page.getByText('Success');
 
         // Add organization
         this.addOrganizationButton = page.locator('div', { hasText: /^Click to add$/ }).nth(2);
-        this.organizationSearchInput = page.getByRole('textbox', { name: 'Search...' });
+
 
         this.saveLeadButton = page.getByRole('button', { name: 'Save' });
         this.organizationCreateSuccessMessage = page.getByText('Organization created successfully');
 
         // General
+
         this.leadSuccessToast = page.getByText('Success', { exact: true });
         this.editLeadButton = page.getByRole('link', { name: '' }).first();
         this.listViewButton = page.getByRole('link', { name: '' });
@@ -436,6 +432,9 @@ export default class CoreLocators {
         this.deleteLeadButton = page.locator(
             '.cursor-pointer.rounded-md.p-1\\.5.text-2xl.transition-all.hover\\:bg-gray-200.dark\\:hover\\:bg-gray-800.max-sm\\:place-self-center.icon-delete'
         ).first();
+        this.searchInputField = page.getByRole("textbox", { name: "Search..." });
+        this.searchInputExact = page.getByRole("textbox", { name: "Search", exact: true });
+
 
         // Tabs
         this.mailButton = page.getByRole('button', { name: ' Mail' });
@@ -473,6 +472,7 @@ export default class CoreLocators {
 
         // Other
         this.appLocator = page.locator("#app");
+        
     }
     async searchByName(name: string) {
         (await this.getElementByTypeAndName('textbox', 'Search')).fill(name);

@@ -110,6 +110,7 @@ export class QuotesPage extends CoreLocators {
         const person = new PersonsPage(this.page);
 
         await person.createPerson(quoteData.person);
+        await person.navigageToPersonsPage();
 
         await this.navigateToQuotesPage();
         // Fill Quote Basics

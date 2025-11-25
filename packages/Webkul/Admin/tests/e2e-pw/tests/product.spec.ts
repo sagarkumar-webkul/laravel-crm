@@ -5,7 +5,7 @@ test.describe("Product mangement",async()=>{
     test("verify create product",async({adminPage})=>{
         const product=new ProductPage(adminPage);
 
-
+       await product.navigateToProductPage();
        await product.createProduct(productData);
 
     });
