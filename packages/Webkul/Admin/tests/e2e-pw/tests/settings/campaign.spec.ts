@@ -26,6 +26,12 @@ test.describe('campaign management ',()=>{
         await campaign.createCampaign(campaignData);
 
     })
+    test('verify udpate campaign',async({adminPage})=>{
+      const campaign=new CampaignsPage(adminPage);
+      await campaign.navigateToCampaigns();
+      await campaign.searchByName(campaignData.name);
+      await campaign.editCampaign(campaignData);
+    })
     test('verify delete campaign',async({adminPage})=>{
         const campaign=new CampaignsPage(adminPage);
         await campaign.navigateToCampaigns();
@@ -33,11 +39,6 @@ test.describe('campaign management ',()=>{
         await campaign.deleteCampaign();
 
     });
-    test('verify udpate campaign',async({adminPage})=>{
-      const campaign=new CampaignsPage(adminPage);
-      await campaign.navigateToCampaigns();
-      await campaign.searchByName(campaignData.name);
-      await campaign.editCampaign(campaignData);
-    })
+
 
 })

@@ -19,7 +19,7 @@ test.describe('event management', () => {
     await event.navigateToEvents();
     await event.editEvents(eventdata);
   })
-  test('verify delelte event',async({adminPage})=>{
+  test('verify delete event',async({adminPage})=>{
     const event =await new EventsPage(adminPage);
     await event.navigateToEvents();
     await event.searchByName(eventdata.name);

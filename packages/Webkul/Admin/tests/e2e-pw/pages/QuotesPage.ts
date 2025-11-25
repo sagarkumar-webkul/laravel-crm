@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import { expect, Locator, Page } from "@playwright/test";
 import CoreLocators from "../locator/CoreLocators";
 import { productData, ProductData } from "./ProductPage";
 import { generateDescription, generateFullName } from "../utils/faker";
@@ -19,7 +19,7 @@ export type QuoteData = {
     // Add quote items type here if needed
 };
 
-export const sampleQuoteData: QuoteData = {
+export const quoteData: QuoteData = {
     subject: generateFullName(),
     description: generateDescription(),
     salesOwnerId: "1",
@@ -107,10 +107,7 @@ export class QuotesPage extends CoreLocators {
     }
 
     async createQuote(quoteData: QuoteData) {
-        const person = new PersonsPage(this.page);
 
-        await person.createPerson(quoteData.person);
-        await person.navigageToPersonsPage();
 
         await this.navigateToQuotesPage();
         // Fill Quote Basics
@@ -150,5 +147,51 @@ export class QuotesPage extends CoreLocators {
         // Save the quote
         await this.saveQuoteButton.click();
 
+    }
+    async updateQuote(quoteData:QuoteData)
+    {
+        await this.firstEditIcon.click();
+        await this.subjectTextbox.fill(quoteData.subject);
+        await this.descriptionTextbox.fill(quoteData.description);
+        await this.salesOwnerSelect.selectOption(quoteData.salesOwnerId);
+        await this.expiredAtTextbox.fill(quoteData.expiredAt);
+
+        // Link to Person - Click to add and select person by name
+        await this.quoteAddPersonButton.click();
+        await this.searchTextbox.fill(quoteData.person.name);
+        await this.page.waitForTimeout(1000);
+        await this.quoteSelectListPerson.click(); // or select existing if applicable
+
+        // Link to Lead - Click to add and select lead by name
+        await this.quoteLinkToLeadButton.click();
+        await this.searchTextbox.fill(quoteData.leadName);
+        await this.addAsNewButton.click(); // or select existing
+
+        // Fill Billing Address
+        await this.billingAddressTextarea.fill(quoteData.address);
+        await this.billingCountrySelect.selectOption(quoteData.countryCode);
+        await this.billingStateSelect.selectOption(quoteData.stateCode);
+        await this.billingCityInput.fill(quoteData.city);
+        await this.billingPostcodeInput.fill(quoteData.postcode);
+
+        // Fill Shipping Address
+        await this.shippingAddressTextarea.fill(quoteData.address);
+        await this.shippingCountrySelect.selectOption(quoteData.countryCode);
+        await this.shippingStateSelect.selectOption(quoteData.stateCode);
+        await this.shippingCityInput.fill(quoteData.city);
+        await this.shippingPostcodeInput.fill(quoteData.postcode);
+
+        // TODO: Add quote items filling logic here as per your application structure
+
+        // Save the quote
+        await this.saveQuoteButton.click();
+
+
+    }
+    async deleteQuote()
+    {
+        await this.firstDeleteIcon.click();
+        await this.agreeButton.click();
+        await expect(this.successMessage.first()).toBeVisible();
     }
 }
