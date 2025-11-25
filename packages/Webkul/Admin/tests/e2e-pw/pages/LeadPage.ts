@@ -75,7 +75,7 @@ export class LeadPage extends CoreLocators {
         }
         await this.leadProductAddMoreButton.click();
         await this.leadProductSelect.click();
-        (await this.getElementByTypeAndName('textbox', 'Search...')).fill(leadData.product.name);
+        await this.searchInputField.fill(leadData.product.name);
         await this.page.locator(`//li[@class="cursor-pointer px-4 py-2 text-gray-800 transition-colors hover:bg-blue-100 dark:text-white dark:hover:bg-gray-900"]`).first().click();
         (await this.getElementByTypeAndName('button', "Save")).click();
         await this.searchInput.fill(leadData.title);
@@ -92,10 +92,10 @@ export class LeadPage extends CoreLocators {
         // Now update the lead with new data
 
         // Fill updated lead data
- 
-     
 
-       
+
+
+
         // Use locators from LeadPage via page1 context to fill fields
         await this.titleInput.fill(leadData.title);
         await this.descriptionTextarea.fill(leadData.description);
@@ -130,7 +130,7 @@ export class LeadPage extends CoreLocators {
         await this.searchInput.fill(leadData.title);
         await this.page.keyboard.press('Enter');
 
-           await Promise.all([
+        await Promise.all([
             this.page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
             (await this.getLeadByTitle(leadData.title)).click(),
         ]);

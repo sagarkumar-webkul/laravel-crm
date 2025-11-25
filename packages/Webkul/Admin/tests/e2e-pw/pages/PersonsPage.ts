@@ -48,7 +48,7 @@ export default class PersonsPage extends CoreLocators {
         // Assign organization (if provided)
         if (personData.organizationName) {
             await this.personOrgSelectDiv.click();
-            await (await this.getElementByTypeAndName('textbox', 'Search...')).fill("Examp");
+            await this.searchInputField.fill("Examp");
             await this.personOrgListItem("Examp").click();
         }
         // Save person
@@ -58,12 +58,11 @@ export default class PersonsPage extends CoreLocators {
         await expect(this.page.getByText(personData.name).first()).toBeVisible();
 
     }
-    async updatePerson(personData:PersonData)
-    {
+    async updatePerson(personData: PersonData) {
         await this.searchInputExact.fill(personData.name);
         await this.page.keyboard.press('Enter');
         await this.firstEditIcon.click();
-          // Fill person details (use first email/phone if multiple provided)
+        // Fill person details (use first email/phone if multiple provided)
         await this.personNameTextbox.fill(personData.name);
         if (personData.emails && personData.emails.length > 0) {
             await this.personEmailTextbox.fill(personData.emails);
@@ -76,24 +75,22 @@ export default class PersonsPage extends CoreLocators {
         // Assign organization (if provided)
         if (personData.organizationName) {
             await this.personOrgSelectDiv.click();
-            await (await this.getElementByTypeAndName('textbox', 'Search...')).fill("Examp");
+            await this.searchInputField.fill("Examp");
             await this.personOrgListItem("Examp").click();
         }
         // Save person
         await this.savePersonButton.click();
-        await this.searchByName(personData.name);
+        await this.searchInputExact.fill(personData.name);
         await expect(this.page.getByText(personData.name).first()).toBeVisible();
 
     }
-    async personDelete()
-    {
-    
+    async personDelete() {
+
         await this.firstDeleteIcon.click();
         await this.agreeButton.click();
         await expect(this.successMessage.first()).toBeVisible();
     }
-    async personMassDelete()
-    {   
+    async personMassDelete() {
         await this.multiSelectCheckbox.click();
         await this.deleteButton.click();
         await this.agreeButton.click();

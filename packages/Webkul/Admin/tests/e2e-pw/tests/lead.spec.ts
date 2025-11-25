@@ -1,5 +1,4 @@
 import { test, expect } from "../fixtures/AdminFixtures";
-import CoreLocators from "../locator/CoreLocators";
 import { LeadData, leadData, LeadPage } from "../pages/LeadPage";
 import PersonsPage, { personData } from "../pages/PersonsPage";
 import { productData } from "../pages/ProductPage";
@@ -19,9 +18,6 @@ test.describe("lead management", async () => {
 
     }
   
-  
-
-
     test("should create a new lead", async ({ adminPage }) => {
 
         const leadPage = new LeadPage(adminPage);
