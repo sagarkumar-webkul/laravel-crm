@@ -101,7 +101,8 @@ export class CampaignsPage  extends SettingsPage{
 
         await this.saveCampaignButton.click();
         await expect(this.successUpdatedMessage).toBeVisible();
-        await this.searchByName(data.name);
+        await this.searchInputExact.fill(data.name);
+        await this.page.keyboard.press('Enter');
         await expect(this.page.getByText(data.name).first()).toBeVisible();
     }
 

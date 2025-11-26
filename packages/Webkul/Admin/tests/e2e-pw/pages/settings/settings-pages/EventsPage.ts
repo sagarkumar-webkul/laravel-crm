@@ -74,6 +74,12 @@ export class EventsPage extends SettingsPage {
        await expect(this.successMessage).toBeVisible();
 
     }
+    async eventSearch(name:string)
+    {
+        await this.searchInputExact.fill(name);
+        await this.page.keyboard.press('Enter');
+
+    }
 
 
 

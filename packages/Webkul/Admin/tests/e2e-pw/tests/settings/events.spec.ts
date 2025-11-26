@@ -15,8 +15,8 @@ test.describe('event management', () => {
   })
   test('verify update event',async({adminPage})=>{
     const event = await new EventsPage(adminPage);
-    await event.searchByName(eventdata.name);
     await event.navigateToEvents();
+    await event.searchByName(eventdata.name);
     await event.editEvents(eventdata);
   })
   test('verify delete event',async({adminPage})=>{
