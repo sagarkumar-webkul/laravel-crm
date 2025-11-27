@@ -1,7 +1,7 @@
 import { Page } from "playwright/test";
 import { SettingsPage } from "../SettingsPage";
 
-export class GroupsPage extends SettingsPage {
+export class UsersPage extends SettingsPage {
     readonly page: Page;
 
     constructor(page: Page) {

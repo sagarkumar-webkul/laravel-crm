@@ -9,5 +9,5 @@ export class PipelinesPage extends SettingsPage {
         this.page = page;
     }
 
-  
+
 }

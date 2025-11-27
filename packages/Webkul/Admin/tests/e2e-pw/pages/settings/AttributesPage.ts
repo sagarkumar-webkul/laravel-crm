@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from "playwright/test";
 import { SettingsPage } from "../SettingsPage";
-import { generateFirstName, generateRandomNumericString } from "../../../utils/faker";
+import { generateFirstName, generateRandomNumericString } from "../../utils/faker";
 
 export type AttributeData = {
     name: string,
@@ -62,11 +62,16 @@ export class AttributesPage extends SettingsPage {
         await this.searchAttribute(attributeData.name);
         await expect(this.page.getByText(attributeData.name).first()).toBeVisible();
     }
-    async searchAttribute(name:string)
-    {   
+    async searchAttribute(name: string) {
         await this.searchInputExact.fill(name);
         await this.page.keyboard.press('Enter');
 
+    }
+    async deleteAttribute()
+    {
+        await this.firstDeleteButton.click();
+        await this.agreeButton.click();
+        await expect(this.successMessage.first()).toBeVisible();
     }
 
 

@@ -1,7 +1,7 @@
 import { Page } from "playwright/test";
 import { SettingsPage } from "../SettingsPage";
 
-export class WebFormsPage extends SettingsPage {
+export class OtherSettingsPage extends SettingsPage {
     readonly page: Page;
 
     constructor(page: Page) {
@@ -9,5 +9,5 @@ export class WebFormsPage extends SettingsPage {
         this.page = page;
     }
 
-  
+
 }

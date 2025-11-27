@@ -1,6 +1,6 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { SettingsPage } from '../SettingsPage';
-import { generateDescription, generateFullName, generateRandomDateTime } from '../../../utils/faker';
+import { generateDescription, generateFullName, generateRandomDateTime } from '../../utils/faker';
 
 export type EventData = {
     name: string,
@@ -49,17 +49,15 @@ export class EventsPage extends SettingsPage {
         await expect(this.successMessage).toBeVisible();
 
     }
-    async massDeleteEvents()
-    { 
-      await this.multiSelectCheckbox.click()
-      await this.deleteButton.click();
-      await this.agreeButton.click();
-      await expect(this.noRecordsAvailable).toBeVisible();
+    async massDeleteEvents() {
+        await this.multiSelectCheckbox.click()
+        await this.deleteButton.click();
+        await this.agreeButton.click();
+        await expect(this.noRecordsAvailable).toBeVisible();
 
     }
-    async editEvents(eventData:EventData)
-    {
-    
+    async editEvents(eventData: EventData) {
+
         await this.firstEditIcon.click();
         await this.nameInput.fill(eventdata.name);
         await this.descriptionTextarea.fill(eventdata.name);
@@ -67,15 +65,13 @@ export class EventsPage extends SettingsPage {
         await this.saveEventButton.click();
         await expect(this.successMessage).toBeVisible();
     }
-    async deleteEvent()
-    {
-       await this.deleteFirstEventButton.click();
-       await this.agreeButton.click();
-       await expect(this.successMessage).toBeVisible();
+    async deleteEvent() {
+        await this.deleteFirstEventButton.click();
+        await this.agreeButton.click();
+        await expect(this.successMessage).toBeVisible();
 
     }
-    async eventSearch(name:string)
-    {
+    async eventSearch(name: string) {
         await this.searchInputExact.fill(name);
         await this.page.keyboard.press('Enter');
 

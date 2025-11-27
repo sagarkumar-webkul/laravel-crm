@@ -1,5 +1,4 @@
 import { Page, Locator, expect } from "@playwright/test";
-import { allowedNodeEnvironmentFlags } from "process";
 import CoreLocators from "../locator/CoreLocators";
 
 export class AdminPage extends CoreLocators {

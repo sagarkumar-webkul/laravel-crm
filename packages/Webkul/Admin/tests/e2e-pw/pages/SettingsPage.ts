@@ -1,5 +1,5 @@
 import { Page } from "playwright/test";
-import CoreLocators from "../../locator/CoreLocators";
+import CoreLocators from "../locator/CoreLocators";
 
 export class SettingsPage extends CoreLocators {
     readonly page: Page;

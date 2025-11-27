@@ -1,24 +1,24 @@
 import { Page, Locator, expect } from '@playwright/test';
-import { generateFullName, generateLastName, generateRandomNumericString } from '../../../utils/faker';
+import { generateFullName, generateLastName, generateRandomNumericString } from '../../utils/faker';
 import { SettingsPage } from '../SettingsPage';
 import { eventdata, EventData } from './EventsPage';
 
-export type CampaignData  = {
+export type CampaignData = {
     name: string;
     subject: string;
-    emailTemplateId: string ;
-    event:EventData ;
+    emailTemplateId: string;
+    event: EventData;
     active: number;
 }
-export const campaignData:CampaignData={
-    name:generateFullName(),
-    subject:generateLastName(),
-    emailTemplateId:generateRandomNumericString(),
-    event:eventdata,
-    active:1,
+export const campaignData: CampaignData = {
+    name: generateFullName(),
+    subject: generateLastName(),
+    emailTemplateId: generateRandomNumericString(),
+    event: eventdata,
+    active: 1,
 }
 
-export class CampaignsPage  extends SettingsPage{
+export class CampaignsPage extends SettingsPage {
     readonly page: Page;
 
     // Campaign locators
@@ -33,8 +33,8 @@ export class CampaignsPage  extends SettingsPage{
     readonly firstCampaignDeleteButton: Locator;
     readonly confirmDeleteButton: Locator;
     readonly successCreatedMessage: Locator;
-    readonly successUpdatedMessage:Locator;
-    readonly successDeletedMessage:Locator;
+    readonly successUpdatedMessage: Locator;
+    readonly successDeletedMessage: Locator;
 
     constructor(page: Page) {
         super(page);
@@ -53,8 +53,8 @@ export class CampaignsPage  extends SettingsPage{
         this.confirmDeleteButton = page.getByRole('button', { name: 'Agree', exact: true });
 
         this.successCreatedMessage = page.getByText(/(created) successfully\./).first();
-        this.successUpdatedMessage= page.getByText(/(updated) successfully\./).first();
-        this.successDeletedMessage= page.getByText(/(deleted) successfully\./).first();
+        this.successUpdatedMessage = page.getByText(/(updated) successfully\./).first();
+        this.successDeletedMessage = page.getByText(/(deleted) successfully\./).first();
     }
 
     async gotoCampaigns() {
@@ -68,8 +68,8 @@ export class CampaignsPage  extends SettingsPage{
         await this.campaignSubjectInput.click(); // For validation if needed
         await this.campaignSubjectInput.fill(data.subject);
 
-        await this.eventDropdown.selectOption({label:data.event.name});
-        await this.emailTemplateDropdown.selectOption({value:"1"});
+        await this.eventDropdown.selectOption({ label: data.event.name });
+        await this.emailTemplateDropdown.selectOption({ value: "1" });
 
 
         if (data.active) {
@@ -90,8 +90,8 @@ export class CampaignsPage  extends SettingsPage{
         await this.campaignSubjectInput.click(); // For validation if needed
         await this.campaignSubjectInput.fill(data.subject);
 
-        await this.eventDropdown.selectOption({label:data.event.name});
-        await this.emailTemplateDropdown.selectOption({value:"1"});
+        await this.eventDropdown.selectOption({ label: data.event.name });
+        await this.emailTemplateDropdown.selectOption({ value: "1" });
 
 
         if (data.active) {
