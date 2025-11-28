@@ -1,10 +1,14 @@
 // groupPage.js
 import { expect, Locator, Page } from '@playwright/test';
 import { SettingsPage } from '../SettingsPage';
-
+import { generateDescription, generateFirstName, generateName } from '../../utils/faker';
 export type GroupData={
     name:string,
     description:string
+}
+export const groupData:GroupData={
+    name: generateFirstName()+" Group",
+    description: generateDescription().slice(0, 60),
 }
 
 export class GroupPage extends SettingsPage {
@@ -13,7 +17,8 @@ export class GroupPage extends SettingsPage {
     readonly saveGroupButton: Locator;
     readonly nameInput: Locator;
     readonly descriptionTextarea: Locator;
-    readonly successMessage: Locator;
+    readonly successMessageGroupCreated: Locator;
+    readonly successMessageGroupUpdated: Locator;
 
     constructor(page:Page) {
         super(page);
@@ -28,13 +33,23 @@ export class GroupPage extends SettingsPage {
         this.descriptionTextarea = page.locator('textarea[name="description"]');
         
         // Notifications
-        this.successMessage = page.getByText("Group created successfully.");
+        this.successMessageGroupCreated = page.getByText("Group created successfully.");
+        this.successMessageGroupUpdated = page.getByText("Group updated successfully.");
     }
-    async createGroup(groupData:GroupData)
+    async createGroup(groupData:GroupData): Promise<void>
     {
         await this.createGroupButton.click();
         await this.nameInput.fill(groupData.name);
         await this.descriptionTextarea.fill(groupData.description);
-        await expect(this.successMessage.first()).toBeVisible();
+        await this.saveGroupButton.click();
+        await expect(this.successMessageGroupCreated.first()).toBeVisible();
+    }
+    async updateGroup(groupData:GroupData): Promise<void>
+    {
+        await this.firstEditIcon.click();
+        await this.nameInput.fill(groupData.name);
+        await this.descriptionTextarea.fill(groupData.description);
+        await this.saveGroupButton.click();
+        await expect(this.successMessageGroupUpdated.first()).toBeVisible();
     }
 }
