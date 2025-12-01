@@ -46,14 +46,6 @@ test.describe("data transfer product management",async()=>{
         await expect(dataTransferPage.successMessage.first()).toBeVisible();    
     }
     )
-    test("verify delete import lead",async({adminPage})=>{
-        const dataTransferPage=new DataTransferPage(adminPage );
-        
-        await dataTransferPage.navigateToDataTransfer();
-        await dataTransferPage.deleteImport();
-        await expect(dataTransferPage.successMessage.first()).toBeVisible();    
-    }
-    )
 })  
 
 
@@ -91,6 +83,14 @@ test.describe("data transfer lead management",async()=>{
         await expect(dataTransferPage.successMessage.first()).toBeVisible();    
     }
     )
+    test("verify delete import lead",async({adminPage})=>{
+        const dataTransferPage=new DataTransferPage(adminPage );
+        
+        await dataTransferPage.navigateToDataTransfer();
+        await dataTransferPage.deleteImport();
+        await expect(dataTransferPage.successMessage.first()).toBeVisible();    
+    }
+    )
 })
 test.describe("data transfer person management",async()=>{
     let organizationId:string | null;
@@ -117,5 +117,14 @@ test.describe("data transfer person management",async()=>{
         await dataTransferPage.updateImport(updatedCsvPath);
         await expect(dataTransferPage.successMessage.first()).toBeVisible();    
     }
+
     )
+    test("verify delete import person",async({adminPage})=>{
+        const dataTransferPage=new DataTransferPage(adminPage );
+        
+        await dataTransferPage.navigateToDataTransfer();
+        await dataTransferPage.deleteImport();
+        await expect(dataTransferPage.successMessage.first()).toBeVisible();    
+    }
+    )   
 })      
