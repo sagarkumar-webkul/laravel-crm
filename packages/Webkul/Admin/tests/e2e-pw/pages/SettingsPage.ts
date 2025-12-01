@@ -26,7 +26,7 @@ export class SettingsPage extends CoreLocators {
 
     // Email Templates
     async navigateToEmailTemplates() {
-        await this.page.goto("admin/settings/marketing/email-templates");
+        await this.page.goto("admin/settings/email-templates");
     }
 
     // Events
