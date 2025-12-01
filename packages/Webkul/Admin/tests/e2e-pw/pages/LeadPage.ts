@@ -93,9 +93,6 @@ export class LeadPage extends CoreLocators {
 
         // Fill updated lead data
 
-
-
-
         // Use locators from LeadPage via page1 context to fill fields
         await this.titleInput.fill(leadData.title);
         await this.descriptionTextarea.fill(leadData.description);

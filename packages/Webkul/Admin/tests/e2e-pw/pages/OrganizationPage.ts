@@ -1,4 +1,4 @@
-import { expect, Page } from "playwright/test";
+import { expect, Locator, Page } from "playwright/test";
 import CoreLocators from "../locator/CoreLocators";
 import { generateFirstName, generateLocation, generateName } from "../utils/faker";
 export type OrganizationData = {
@@ -21,10 +21,12 @@ export default class OrganizationPage extends CoreLocators{
 
     
     readonly page:Page
+    readonly firstOrganization:Locator;
     constructor(page:Page)
     {
         super(page)
         this.page=page
+        this.firstOrganization= page.locator(`(//p[@class="break-words"])[1]`);
 
     }
     async navigateToOrganization()
@@ -49,6 +51,7 @@ export default class OrganizationPage extends CoreLocators{
 
     await this.searchInputField.fill('exampl');
     await this.orgExampleListItem('Example').click();
+
 
 
     // Save organization

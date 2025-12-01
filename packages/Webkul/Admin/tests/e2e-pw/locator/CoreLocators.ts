@@ -488,8 +488,11 @@ export default class CoreLocators {
     }
     async massDelete() {
         await this.multiSelectCheckbox.click();
+        if(await this.deleteButton.isVisible())  {
         await this.deleteButton.click();
         await this.agreeButton.click();
+        }
+
         await expect(this.noRecordsAvailable).toBeVisible();
 
     }

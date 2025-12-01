@@ -1,4 +1,4 @@
-import { expect, Page } from "playwright/test";
+import { expect, Locator, Page } from "playwright/test";
 import CoreLocators from "../locator/CoreLocators";
 import { generateEmail, generateFullName, generateName, generatePhoneNumber } from "../utils/faker";
 import { organizationData } from "../pages/OrganizationPage";
@@ -22,10 +22,12 @@ export const personData: PersonData = {
 
 export default class PersonsPage extends CoreLocators {
     readonly page: Page;
+    readonly firstPerson:Locator;
 
     constructor(page: Page) {
         super(page),
             this.page = page
+            this.firstPerson= page.locator(`(//div[@class="flex flex-col gap-1.5 dark:text-gray-300"])[1]`);
     }
 
     async navigageToPersonsPage() {

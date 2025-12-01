@@ -51,7 +51,7 @@ export class SettingsPage extends CoreLocators {
 
     // Data Transfer
     async navigateToDataTransfer() {
-        await this.page.goto("admin/settings/data-transfer");
+        await this.page.goto("admin/settings/data-transfer/imports");
     }
 
     // Other Settings
