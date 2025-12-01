@@ -16,5 +16,10 @@ test.describe("group managment",async()=>{
         }
         await groupPage.updateGroup(updatedGroupData);
     })
+    test("verify delete group",async({adminPage})=>{
+        const groupPage=new GroupPage(adminPage);
+        await groupPage.navigateToGroups();
+    
+    })
  
 })

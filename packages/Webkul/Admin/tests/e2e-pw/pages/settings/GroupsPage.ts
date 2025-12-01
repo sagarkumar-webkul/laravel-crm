@@ -43,6 +43,8 @@ export class GroupPage extends SettingsPage {
         await this.descriptionTextarea.fill(groupData.description);
         await this.saveGroupButton.click();
         await expect(this.successMessageGroupCreated.first()).toBeVisible();
+        await this.searchGroup(groupData.name);
+        await expect(this.page.getByText(groupData.name).first()).toBeVisible();
     }
     async updateGroup(groupData:GroupData): Promise<void>
     {
@@ -51,5 +53,19 @@ export class GroupPage extends SettingsPage {
         await this.descriptionTextarea.fill(groupData.description);
         await this.saveGroupButton.click();
         await expect(this.successMessageGroupUpdated.first()).toBeVisible();
+        await this.searchGroup(groupData.name);
+        await expect(this.page.getByText(groupData.name).first()).toBeVisible();
+    }
+    async deleteGroup(): Promise<void>
+    {
+        await this.firstDeleteIcon.click();
+        await this.agreeButton.click();
+        await expect(this.successMessage.first()).toBeVisible();
+    }
+    async searchGroup(name:string): Promise<void>
+    {
+        await this.searchInputExact.fill(name);
+        await this.page.keyboard.press('Enter');
+
     }
 }
