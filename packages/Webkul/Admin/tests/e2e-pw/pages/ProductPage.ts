@@ -1,4 +1,4 @@
-import { Page } from "playwright/test";
+import { expect, Page } from "playwright/test";
 import CoreLocators from "../locator/CoreLocators";
 import { generateDescription, generateName, generateSKU } from "../utils/faker";
 export type ProductData = {
@@ -33,12 +33,7 @@ export class ProductPage extends CoreLocators {
     await this.page.goto("admin/products");
 
   }
-  async createProduct(productdata: ProductData) {
-
-
-    // Click "Create Product"
-    await this.createProductLink.click();
-
+  async productForm(productdata: ProductData) {
 
     // Fill product form using this
     await this.productNameTextbox.waitFor({ state: "visible" });
@@ -55,14 +50,19 @@ export class ProductPage extends CoreLocators {
 
     // Save product
     await this.saveProductsButton.click();
-
-    // Confirm success message
-
-    // Return product data
-    return productdata;
-
-
+    await expect(this.successMessage.first()).toBeVisible();
+    // await this.searchProduct(productdata.name);   /* searching is not working now once the issue is fixed uncomment this line */
+    // await expect(this.page.getByText(productdata.name).first()).toBeVisible();
 
   }
-
+  async searchProduct(productName: string) {
+    await this.searchInputExact.fill(productName);
+    await this.page.keyboard.press('Enter');
+  }
+  async deleteProduct()
+  {
+    await this.firstDeleteIcon.click();
+    await this.agreeButton.click();
+    await expect(this.successMessage.first()).toBeVisible();
+  }
 }
