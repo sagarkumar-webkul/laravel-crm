@@ -41,7 +41,8 @@ export class LeadPage extends CoreLocators {
     async createLead(leadData: LeadData) {
         const productPage = new ProductPage(this.page);
         await productPage.navigateToProductPage();
-        await productPage.createProduct(leadData.product);
+        await productPage.createProductLink.click()
+        await productPage.productForm(leadData.product);
 
         await this.navigateToLeadList();
         await this.createLeadButton.click();
