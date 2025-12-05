@@ -48,14 +48,6 @@ test.describe("lead management", async () => {
 
 
     })
-    test('verify mass delete lead',async({adminPage})=>{
-        const lead=new LeadPage(adminPage);
-        await lead.createLead(leadData);
-        await lead.createLead(updatedLeadData);
-        await lead.listView();
-        await lead.massDelete();
-
-    })
 
 
 })

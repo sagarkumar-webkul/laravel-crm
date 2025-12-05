@@ -107,6 +107,7 @@ export class MailPage extends CoreLocators {
         // Assuming there's a save draft button
         await this.saveDraftButton.click();
         await this.navigateToMailDraftPage();
+        await this.searchEmail(mailData.subject);
         await expect(this.page.getByRole('paragraph').filter({ hasText: mailData.subject }).first()).toBeVisible();
     }
     async movedEmailToTrash() {
