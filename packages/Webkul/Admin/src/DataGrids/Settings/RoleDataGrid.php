@@ -51,11 +51,11 @@ class RoleDataGrid extends DataGrid
         ]);
 
         $this->addColumn([
-            'index'    => 'description',
-            'label'    => trans('admin::app.settings.roles.index.datagrid.description'),
-            'type'     => 'string',
+            'index'      => 'description',
+            'label'      => trans('admin::app.settings.roles.index.datagrid.description'),
+            'type'       => 'string',
             'searchable' => true,
-            'sortable' => false,
+            'sortable'   => false,
         ]);
 
         $this->addColumn([
