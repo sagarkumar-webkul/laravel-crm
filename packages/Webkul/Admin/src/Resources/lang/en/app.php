@@ -460,6 +460,7 @@ return [
                 'billing-address' => 'Billing Address',
                 'date' => 'Date',
                 'discount' => 'Discount',
+                'description' => 'Description',
                 'expired-at' => 'Expired At',
                 'grand-total' => 'Grand Total',
                 'person' => 'Person',
@@ -732,13 +733,13 @@ return [
             ],
 
             'inventory' => [
-                'source' => 'Source',
+                'warehouse' => 'Warehouse',
                 'in-stock' => 'In Stock',
                 'allocated' => 'Allocated',
                 'on-hand' => 'On Hand',
                 'actions' => 'Actions',
                 'assign' => 'Assign',
-                'add-source' => 'Add Source',
+                'add-warehouse' => 'Add Warehouse',
                 'location' => 'Location',
                 'add-more' => 'Add More',
                 'save' => 'Save',
